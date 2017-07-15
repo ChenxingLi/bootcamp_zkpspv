@@ -88,4 +88,4 @@ $(EXECUTABLES): %: %.o
 clean: 
 	$(RM) $(EXEC_OBJS) $(EXECUTABLES)
 
-.PHONY: all clean clean-all doc doxy lib install
+.PHONY: clean
