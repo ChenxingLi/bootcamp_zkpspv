@@ -21,7 +21,7 @@ void profile_tally(size_t wordsize_, size_t arity_)
     assert(bit);
 }
 
-int main(void)
+int main(int argc, char* argv[])
 {
     typedef default_r1cs_ppzkpcd_pp PCD_pp;
 
@@ -32,11 +32,8 @@ int main(void)
     size_t a[5] = {2,3,4,6,8};
     size_t b[5] = {16,24,32,48,64};
 
-    for(int i=0;i<5;i++){
-        for(int j=0;j<5;j++){
-            profile_tally<PCD_pp>(b[j], a[j]);
-        }
-    }
+
+    profile_tally<PCD_pp>(b[argv[1][0]-'0'], a[argv[2][0]-'0']);
 
     return 0;
 }
