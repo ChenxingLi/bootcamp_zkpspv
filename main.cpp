@@ -14,7 +14,7 @@ template<typename PCD_ppT>
 void profile_tally(const size_t arity, const size_t max_layer)
 {
     const size_t wordsize = 32;
-    const bool test_serialization = true;
+    const bool test_serialization = false;
     const bool bit = run_r1cs_sp_ppzkpcd_tally_example<PCD_ppT>(wordsize, arity, max_layer, test_serialization);
     assert(bit);
 }
@@ -27,7 +27,7 @@ int main(void)
     PCD_pp::init_public_params();
 
     const size_t arity = 2;
-    const size_t max_layer = 2;
+    const size_t max_layer = 0;
 
     profile_tally<PCD_pp>(arity, max_layer);
 }
