@@ -22,14 +22,15 @@ LDLIBS += -lgmpxx -lgmp -lboost_program_options
 # OpenSSL and its dependencies (needed explicitly for static builds):
 LDLIBS += -lcrypto -ldl -lz -lsnark
 
-SRC_OBJS = \
-    tally_cp.o \
-    run_r1cs_sp_ppzkpcd.o
+SRCS = \
+    tally_cp \
+    run_r1cs_sp_ppzkpcd
 
 EXECUTABLES = \
 	main
 
 EXEC_OBJS =$(patsubst %,%.o,$(EXECUTABLES))
+SRC_OBJS =$(patsubst %,%.o,$(SRCS))
 
 all: $(EXECUTABLES)
 
