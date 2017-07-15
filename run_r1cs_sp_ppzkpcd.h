@@ -13,6 +13,8 @@
 #ifndef RUN_R1CS_SP_PPZKPCD_HPP_
 #define RUN_R1CS_SP_PPZKPCD_HPP_
 
+#include <cstddef>
+
 namespace libsnark {
 
 /**
@@ -30,6 +32,6 @@ bool run_r1cs_sp_ppzkpcd_tally_example(const size_t wordsize,
 
 } // libsnark
 
-#include "zk_proof_systems/pcd/r1cs_pcd/r1cs_sp_ppzkpcd/examples/run_r1cs_sp_ppzkpcd.tcc"
+//#include "run_r1cs_sp_ppzkpcd.cpp"
 
 #endif // RUN_R1CS_SP_PPZKPCD_HPP_

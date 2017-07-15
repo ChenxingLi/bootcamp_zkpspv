@@ -22,9 +22,9 @@
 #ifndef TALLY_CP_HPP_
 #define TALLY_CP_HPP_
 
-#include "gadgetlib1/gadgets/basic_gadgets.hpp"
-#include "zk_proof_systems/pcd/r1cs_pcd/compliance_predicate/compliance_predicate.hpp"
-#include "zk_proof_systems/pcd/r1cs_pcd/compliance_predicate/cp_handler.hpp"
+#include <gadgetlib1/gadgets/basic_gadgets.hpp>
+#include <zk_proof_systems/pcd/r1cs_pcd/compliance_predicate/compliance_predicate.hpp>
+#include <zk_proof_systems/pcd/r1cs_pcd/compliance_predicate/cp_handler.hpp>
 
 namespace libsnark {
 
@@ -105,7 +105,4 @@ public:
 };
 
 } // libsnark
-
-#include "zk_proof_systems/pcd/r1cs_pcd/compliance_predicate/examples/tally_cp.tcc"
-
 #endif // TALLY_CP_HPP_

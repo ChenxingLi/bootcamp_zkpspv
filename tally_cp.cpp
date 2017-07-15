@@ -11,13 +11,11 @@
  * @copyright  MIT license (see LICENSE file)
  *****************************************************************************/
 
-#ifndef TALLY_CP_TCC_
-#define TALLY_CP_TCC_
 
 #include <algorithm>
 #include <functional>
 #include <algebra/fields/field_utils.hpp>
-#include "tally_cp.hpp"
+#include "tally_cp.h"
 
 namespace libsnark {
 
@@ -274,5 +272,3 @@ std::shared_ptr<r1cs_pcd_message<FieldT> > tally_cp_handler<FieldT>::get_base_ca
 }
 
 } // libsnark
-
-#endif // TALLY_CP_TCC_

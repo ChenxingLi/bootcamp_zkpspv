@@ -22,8 +22,10 @@ LDLIBS += -lgmpxx -lgmp -lboost_program_options
 # OpenSSL and its dependencies (needed explicitly for static builds):
 LDLIBS += -lcrypto -ldl -lz -lsnark
 
+SRC
+
 EXECUTABLES = \
-	profile_r1cs_sp_ppzkpcd
+	main
 
 EXEC_OBJS =$(patsubst %,%.o,$(EXECUTABLES))
 
