@@ -2,6 +2,7 @@ cmake-build-debug/*
 .idea/*
 
 profile_r1cs_sp_ppzkpcd
+CMakeLists.txt
 
 # Prerequisites
 *.d
