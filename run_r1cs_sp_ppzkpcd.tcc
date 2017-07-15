@@ -111,6 +111,7 @@ namespace libsnark {
         end = clock();
         dur = (double)(end - start);
         fout << (dur/CLOCKS_PER_SEC) << "\t" << tally_cp.constraint_system.num_constraints() << "\n";
+        fout.close();
 
         if (test_serialization) {
             enter_block("Test serialization of proof");
