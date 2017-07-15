@@ -22,20 +22,15 @@ LDLIBS += -lgmpxx -lgmp -lboost_program_options
 # OpenSSL and its dependencies (needed explicitly for static builds):
 LDLIBS += -lcrypto -ldl -lz -lsnark
 
-SRCS = \
-    tally_cp \
-    run_r1cs_sp_ppzkpcd
-
 EXECUTABLES = \
 	main
 
 EXEC_OBJS =$(patsubst %,%.o,$(EXECUTABLES))
-SRC_OBJS =$(patsubst %,%.o,$(SRCS))
 
 all: $(EXECUTABLES)
 
 # In order to detect changes to #include dependencies. -MMD below generates a .d file for each .o file. Include the .d file.
--include $(patsubst %.o,%.d, $(EXEC_OBJS) $(SRC_OBJS) )
+-include $(patsubst %.o,%.d, $(EXEC_OBJS) )
 
 $(EXEC_OBJS): %.o: %.cpp
 	$(CXX) -o $@   $< -c -MMD $(CXXFLAGS)
