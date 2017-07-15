@@ -6,7 +6,7 @@
  *****************************************************************************/
 #include <common/default_types/r1cs_ppzkpcd_pp.hpp>
 #include <zk_proof_systems/pcd/r1cs_pcd/r1cs_sp_ppzkpcd/r1cs_sp_ppzkpcd.hpp>
-#include "run_r1cs_sp_ppzkpcd.h"
+#include "run_r1cs_sp_ppzkpcd.hpp"
 
 using namespace libsnark;
 
