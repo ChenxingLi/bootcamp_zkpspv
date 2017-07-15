@@ -27,7 +27,7 @@ EXECUTABLES = \
 
 EXEC_OBJS =$(patsubst %,%.o,$(EXECUTABLES))
 
-# all: $(EXECUTABLES)
+all: $(EXECUTABLES)
 
 # In order to detect changes to #include dependencies. -MMD below generates a .d file for each .o file. Include the .d file.
 -include $(patsubst %.o,%.d, $(EXEC_OBJS) )
