@@ -37,8 +37,8 @@ all: $(EXECUTABLES)
 # In order to detect changes to #include dependencies. -MMD below generates a .d file for each .o file. Include the .d file.
 -include $(patsubst %.o,%.d, $(EXEC_OBJS) $(SRC_OBJS) )
 
-#$(SRC_OBJS): %.o: %.cpp %.h
-#    $(CXX) -o $@   $< -c -MMD $(CXXFLAGS)
+$(SRC_OBJS): %.o: %.cpp,%.h
+    $(CXX) -o $@   $< -c -MMD $(CXXFLAGS)
 
 $(EXEC_OBJS): %.o: %.cpp
 	$(CXX) -o $@   $< -c -MMD $(CXXFLAGS)
