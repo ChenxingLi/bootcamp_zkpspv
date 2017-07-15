@@ -23,7 +23,7 @@ LDLIBS += -lgmpxx -lgmp -lboost_program_options
 LDLIBS += -lcrypto -ldl -lz -lsnark
 
 SRC_OBJS = \
-    tally_cp.o
+    tally_cp.o \
     run_r1cs_sp_ppzkpcd.o
 
 EXECUTABLES = \
