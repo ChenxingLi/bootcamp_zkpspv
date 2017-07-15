@@ -78,7 +78,7 @@ public:
     pb_variable_array<FieldT> sum_in_packed_aux;
     pb_variable_array<FieldT> count_in_packed_aux;
 
-    std::shared_ptr<packing_gadget<FieldT> > unpack_sum_out;
+    std::vector<packing_gadget<FieldT>>  unpack_sum_out;
     std::shared_ptr<packing_gadget<FieldT> > unpack_count_out;
     std::vector<packing_gadget<FieldT> > pack_sum_in;
     std::vector<packing_gadget<FieldT> > pack_count_in;
@@ -90,10 +90,12 @@ public:
 
     size_t wordsize;
     size_t message_length;
+    size_t circuit_size;
 
     tally_cp_handler(const size_t type,
                      const size_t max_arity,
                      const size_t wordsize,
+                     const size_t circuit_size,
                      const bool relies_on_same_type_inputs = false,
                      const std::set<size_t> accepted_input_types = std::set<size_t>());
 

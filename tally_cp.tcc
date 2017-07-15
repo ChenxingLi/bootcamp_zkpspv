@@ -134,7 +134,7 @@ public:
 };
 
 template<typename FieldT>
-tally_cp_handler<FieldT>::tally_cp_handler(const size_t type, const size_t max_arity, const size_t wordsize,
+tally_cp_handler<FieldT>::tally_cp_handler(const size_t type, const size_t max_arity, const size_t wordsize, const size_t circuit_size,
                                            const bool relies_on_same_type_inputs,
                                            const std::set<size_t> accepted_input_types) :
     compliance_predicate_handler<FieldT, protoboard<FieldT> >(protoboard<FieldT>(),
@@ -172,7 +172,11 @@ tally_cp_handler<FieldT>::tally_cp_handler(const size_t type, const size_t max_a
 
     compute_type_val_inner_product.reset(new inner_product_gadget<FieldT>(this->pb, incoming_types, sum_in_packed, type_val_inner_product, "compute_type_val_inner_product"));
 
-    unpack_sum_out.reset(new packing_gadget<FieldT>(this->pb, std::dynamic_pointer_cast<tally_pcd_message_variable<FieldT> >(this->outgoing_message)->sum_bits, sum_out_packed, "pack_sum_out"));
+    for(size_t i=0; i < circuit_size; ++i) {
+        unpack_sum_out.emplace_back(packing_gadget<FieldT>(this->pb, std::dynamic_pointer_cast<tally_pcd_message_variable<FieldT> >(this->outgoing_message)->sum_bits, sum_out_packed, "pack_sum_out"));
+    }
+    this -> circuit_size = circuit_size;
+
     unpack_count_out.reset(new packing_gadget<FieldT>(this->pb, std::dynamic_pointer_cast<tally_pcd_message_variable<FieldT> >(this->outgoing_message)->count_bits, count_out_packed, "pack_count_out"));
 
     for (size_t i = 0; i < max_arity; ++i)
@@ -187,7 +191,9 @@ tally_cp_handler<FieldT>::tally_cp_handler(const size_t type, const size_t max_a
 template<typename FieldT>
 void tally_cp_handler<FieldT>::generate_r1cs_constraints()
 {
-    unpack_sum_out->generate_r1cs_constraints(true);
+    for (size_t i = 0; i < this->circuit_size; ++i) {
+        unpack_sum_out[i].generate_r1cs_constraints(true);
+    }
     unpack_count_out->generate_r1cs_constraints(true);
 
     for (size_t i = 0; i < this->max_arity; ++i)
@@ -256,7 +262,9 @@ void tally_cp_handler<FieldT>::generate_r1cs_witness(const std::vector<std::shar
         this->pb.val(count_out_packed) += this->pb.val(count_in_packed[i]);
     }
 
-    unpack_sum_out->generate_r1cs_witness_from_packed();
+    for (size_t i = 0; i < this->circuit_size; ++i) {
+        unpack_sum_out[i].generate_r1cs_witness_from_packed();
+    }
     unpack_count_out->generate_r1cs_witness_from_packed();
 }
 
