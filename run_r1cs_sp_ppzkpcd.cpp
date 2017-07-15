@@ -14,9 +14,9 @@
 
 #ifndef RUN_R1CS_SP_PPZKPCD_TCC_
 #define RUN_R1CS_SP_PPZKPCD_TCC_
+#include "run_r1cs_sp_ppzkpcd.h"
 
 #include <zk_proof_systems/pcd/r1cs_pcd/r1cs_sp_ppzkpcd/r1cs_sp_ppzkpcd.hpp>
-#include "run_r1cs_sp_ppzkpcd.h"
 #include "tally_cp.h"
 
 namespace libsnark {
