@@ -108,6 +108,6 @@ public:
 
 } // libsnark
 
-#include "zk_proof_systems/pcd/r1cs_pcd/compliance_predicate/examples/tally_cp.tcc"
+#include "tally_cp.tcc"
 
 #endif // TALLY_CP_HPP_
