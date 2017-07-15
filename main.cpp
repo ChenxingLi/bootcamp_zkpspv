@@ -29,8 +29,8 @@ int main(int argc, char* argv[])
     PCD_pp::init_public_params();
 
 
-    size_t a[5] = {2,3,4,6,8};
-    size_t b[5] = {16,24,32,48,64};
+    size_t a[6] = {1,2,3,4,6,8};
+    size_t b[9] = {16,24,32,48,64,96,128,256,512};
 
 
     profile_tally<PCD_pp>(b[argv[1][0]-'0'], a[argv[2][0]-'0']);
