@@ -26,6 +26,7 @@ template<typename PCD_ppT>
 bool run_r1cs_sp_ppzkpcd_tally_example(const size_t wordsize,
                                        const size_t arity,
                                        const size_t depth,
+                                       const size_t csize,
                                        const bool test_serialization);
 
 } // libsnark

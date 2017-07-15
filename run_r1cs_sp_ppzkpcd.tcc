@@ -24,6 +24,7 @@ namespace libsnark {
     bool run_r1cs_sp_ppzkpcd_tally_example(const size_t wordsize,
                                            const size_t arity,
                                            const size_t depth,
+                                           const size_t csize,
                                            const bool test_serialization) {
         enter_block("Call to run_r1cs_sp_ppzkpcd_tally_example");
 
@@ -50,7 +51,7 @@ namespace libsnark {
 
         enter_block("Generate compliance predicate");
         const size_t type = 1;
-        tally_cp_handler<FieldT> tally(type, arity, wordsize);
+        tally_cp_handler<FieldT> tally(type, arity, wordsize, csize);
         tally.generate_r1cs_constraints();
         r1cs_pcd_compliance_predicate<FieldT> tally_cp = tally.get_compliance_predicate();
         leave_block("Generate compliance predicate");
