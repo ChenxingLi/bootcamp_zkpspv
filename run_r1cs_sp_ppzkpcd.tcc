@@ -75,7 +75,7 @@ namespace libsnark {
         long layer = depth;
         size_t i = 0;
 
-        const size_t cur_idx = (nodes_in_layer - 1) / (arity - 1) + i;
+        const size_t cur_idx = 0;
 
         std::vector<std::shared_ptr<r1cs_pcd_message<FieldT> > > msgs(arity, base_msg);
         std::vector<r1cs_sp_ppzkpcd_proof<PCD_ppT> > proofs(arity);
