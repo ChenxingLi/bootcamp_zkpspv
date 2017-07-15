@@ -11,9 +11,11 @@
 using namespace libsnark;
 
 template<typename PCD_ppT>
-void profile_tally(const size_t arity, const size_t max_layer)
+void profile_tally(size_t wordsize_, size_t arity_)
 {
-    const size_t wordsize = 32;
+    const size_t wordsize = wordsize_;
+    const size_t arity = arity_;
+    const size_t max_layer = 0;
     const bool test_serialization = false;
     const bool bit = run_r1cs_sp_ppzkpcd_tally_example<PCD_ppT>(wordsize, arity, max_layer, test_serialization);
     assert(bit);
@@ -26,8 +28,15 @@ int main(void)
     start_profiling();
     PCD_pp::init_public_params();
 
-    const size_t arity = 2;
-    const size_t max_layer = 0;
 
-    profile_tally<PCD_pp>(arity, max_layer);
+    size_t a[5] = {2,3,4,6,8};
+    size_t b[5] = {16,24,32,48,64};
+
+    for(int i=0;i<5;i++){
+        for(int j=0;j<5;j++){
+            profile_tally<PCD_pp>(b[j], a[j]);
+        }
+    }
+
+    return 0;
 }
