@@ -32,9 +32,10 @@ int main(int argc, char* argv[])
 
     size_t a[6] = {1,2,3,4,6,8};
     size_t b[9] = {16,24,32,48,64,96,128,256,512};
+    size_t c = (size_t)(1 << ((argv[3][0]-'0') * 2 + 1));
 
 
-    profile_tally<PCD_pp>(b[argv[1][0]-'0'], a[argv[2][0]-'0'], (size_t)(argv[3][0]-'0'));
+    profile_tally<PCD_pp>(b[argv[1][0]-'0'], a[argv[2][0]-'0'], c);
 
     return 0;
 }
