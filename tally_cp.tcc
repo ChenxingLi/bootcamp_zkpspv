@@ -208,6 +208,9 @@ void tally_cp_handler<FieldT>::generate_r1cs_constraints()
     for (size_t i=0; i< this->circuit_size - 1; ++i) {
         this->pb.add_r1cs_constraint(r1cs_constraint<FieldT>(square[i],square[i],square[i+1]), FMT("", "constraint for test performance", i));
     }
+    this->pb.add_r1cs_constraint(r1cs_constraint<FieldT>(unpack_count_out->packed,square[0],0), FMT("", "link"));
+
+
 
     /* constrain arity indicator variables so that arity_indicators[arity] = 1 and arity_indicators[i] = 0 for any other i */
     for (size_t i = 0; i < this->max_arity; ++i)
