@@ -8,8 +8,8 @@
 
 # To override these, use "make OPTFLAGS=..." etc.
 CURVE = BN128
-OPTFLAGS = -O2 -march=native -mtune=native
-FEATUREFLAGS = -DUSE_ASM -DMONTGOMERY_OUTPUT
+OPTFLAGS = -O2 -march=native -mtune=native -fopenmp
+FEATUREFLAGS = -DUSE_ASM -DMONTGOMERY_OUTPUT -DMULTICORE
 
 
 INSTALL_PATH = /usr/local
