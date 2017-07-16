@@ -278,7 +278,7 @@ void tally_cp_handler<FieldT>::generate_r1cs_witness(const std::vector<std::shar
 template<typename FieldT>
 std::shared_ptr<r1cs_pcd_message<FieldT> > tally_cp_handler<FieldT>::get_base_case_message() const
 {
-    const size_t type = 0;
+    const size_t type = 1;
     const size_t sum = 0;
     const size_t count = 0;
 
