@@ -205,8 +205,10 @@ void tally_cp_handler<FieldT>::generate_r1cs_constraints()
         this->pb.add_r1cs_constraint(r1cs_constraint<FieldT>(incoming_types[i], count_in_packed_aux[i], count_in_packed[i]), FMT("", "initial_sum_%zu_is_zero", i));
     }
 
-    for (size_t i=0; i< this->circuit_size - 1; ++i) {
-        this->pb.add_r1cs_constraint(r1cs_constraint<FieldT>(square[i],square[i],square[i+1]), FMT("", "constraint for test performance", i));
+    for (size_t i=0; i< this->circuit_size - 8; ++i) {
+        for (size_t j=1; j < 9; j++){
+            this->pb.add_r1cs_constraint(r1cs_constraint<FieldT>(square[i],square[i],square[i+j]), FMT("", "constraint for test performance", i));
+        }
     }
     this->pb.add_r1cs_constraint(r1cs_constraint<FieldT>(unpack_count_out->packed,square[0],0), FMT("", "link"));
 
