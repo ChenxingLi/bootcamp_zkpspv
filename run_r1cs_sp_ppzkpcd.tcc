@@ -72,7 +72,7 @@ namespace libsnark {
             std::vector<r1cs_sp_ppzkpcd_proof<PCD_ppT> > proofs(arity);
             if(cur_idx > 0) {
                 msgs[0] = tree_messages[cur_idx  - 1];
-                proofs[0] = tree_proofs[cur_idx  - 1];
+                //proofs[0] = tree_proofs[cur_idx  - 1];
             }
 
             std::shared_ptr<r1cs_pcd_local_data<FieldT> > ld;
