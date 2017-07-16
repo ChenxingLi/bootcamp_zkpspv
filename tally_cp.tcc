@@ -172,12 +172,11 @@ tally_cp_handler<FieldT>::tally_cp_handler(const size_t type, const size_t max_a
 
     compute_type_val_inner_product.reset(new inner_product_gadget<FieldT>(this->pb, incoming_types, sum_in_packed, type_val_inner_product, "compute_type_val_inner_product"));
 
-    for(size_t i=0; i < circuit_size; ++i) {
-        unpack_sum_out.emplace_back(packing_gadget<FieldT>(this->pb, std::dynamic_pointer_cast<tally_pcd_message_variable<FieldT> >(this->outgoing_message)->sum_bits, sum_out_packed, "pack_sum_out"));
-    }
-    this -> circuit_size = circuit_size;
-
+    unpack_sum_out.reset(new packing_gadget<FieldT>(this->pb, std::dynamic_pointer_cast<tally_pcd_message_variable<FieldT> >(this->outgoing_message)->sum_bits, sum_out_packed, "pack_sum_out"));
     unpack_count_out.reset(new packing_gadget<FieldT>(this->pb, std::dynamic_pointer_cast<tally_pcd_message_variable<FieldT> >(this->outgoing_message)->count_bits, count_out_packed, "pack_count_out"));
+
+    square.allocate(this->pb, circuit_size, "mutiple");
+    this->circuit_size = circuit_size;
 
     for (size_t i = 0; i < max_arity; ++i)
     {
@@ -191,9 +190,7 @@ tally_cp_handler<FieldT>::tally_cp_handler(const size_t type, const size_t max_a
 template<typename FieldT>
 void tally_cp_handler<FieldT>::generate_r1cs_constraints()
 {
-    for (size_t i = 0; i < this->circuit_size; ++i) {
-        unpack_sum_out[i].generate_r1cs_constraints(true);
-    }
+    unpack_sum_out->generate_r1cs_constraints(true);
     unpack_count_out->generate_r1cs_constraints(true);
 
     for (size_t i = 0; i < this->max_arity; ++i)
@@ -206,6 +203,10 @@ void tally_cp_handler<FieldT>::generate_r1cs_constraints()
     {
         this->pb.add_r1cs_constraint(r1cs_constraint<FieldT>(incoming_types[i], sum_in_packed_aux[i], sum_in_packed[i]), FMT("", "initial_sum_%zu_is_zero", i));
         this->pb.add_r1cs_constraint(r1cs_constraint<FieldT>(incoming_types[i], count_in_packed_aux[i], count_in_packed[i]), FMT("", "initial_sum_%zu_is_zero", i));
+    }
+
+    for (size_t i=0; i< this->circuit_size - 1; ++i) {
+        this->pb.add_r1cs_constraint(r1cs_constraint<FieldT>(square[i],square[i],square[i+1]), FMT("", "constraint for test performance", i));
     }
 
     /* constrain arity indicator variables so that arity_indicators[arity] = 1 and arity_indicators[i] = 0 for any other i */
@@ -248,6 +249,11 @@ void tally_cp_handler<FieldT>::generate_r1cs_witness(const std::vector<std::shar
         }
     }
 
+    for (size_t i = 0; i < this->circuit_size; ++i)
+    {
+        this->pb.val(square[i]) = FieldT(0);
+    }
+
     for (size_t i = 0; i < this->max_arity + 1; ++i)
     {
         this->pb.val(arity_indicators[i]) = (incoming_messages.size() == i ? FieldT::one() : FieldT::zero());
@@ -262,9 +268,7 @@ void tally_cp_handler<FieldT>::generate_r1cs_witness(const std::vector<std::shar
         this->pb.val(count_out_packed) += this->pb.val(count_in_packed[i]);
     }
 
-    for (size_t i = 0; i < this->circuit_size; ++i) {
-        unpack_sum_out[i].generate_r1cs_witness_from_packed();
-    }
+    unpack_sum_out->generate_r1cs_witness_from_packed();
     unpack_count_out->generate_r1cs_witness_from_packed();
 }
 

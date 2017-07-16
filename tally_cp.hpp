@@ -39,6 +39,7 @@ public:
     size_t sum;
     size_t count;
 
+
     tally_pcd_message(const size_t type,
                       const size_t wordsize,
                       const size_t sum,
@@ -78,7 +79,9 @@ public:
     pb_variable_array<FieldT> sum_in_packed_aux;
     pb_variable_array<FieldT> count_in_packed_aux;
 
-    std::vector<packing_gadget<FieldT>>  unpack_sum_out;
+    pb_variable_array<FieldT> square;
+
+    std::shared_ptr<packing_gadget<FieldT> > unpack_sum_out;
     std::shared_ptr<packing_gadget<FieldT> > unpack_count_out;
     std::vector<packing_gadget<FieldT> > pack_sum_in;
     std::vector<packing_gadget<FieldT> > pack_count_in;
@@ -109,5 +112,7 @@ public:
 } // libsnark
 
 #include "tally_cp.tcc"
+
+//#include "zk_proof_systems/pcd/r1cs_pcd/compliance_predicate/examples/tally_cp.tcc"
 
 #endif // TALLY_CP_HPP_
