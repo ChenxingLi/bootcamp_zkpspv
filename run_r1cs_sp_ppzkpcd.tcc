@@ -99,7 +99,7 @@ namespace libsnark {
                                                                                           tally.get_witness());
 
         double dur;
-        clock_t start,end;
+        clock_t start, end;
         start = clock();
         std::ofstream fout;
         fout.open("out.txt", std::ios_base::out | std::ios_base::app);
@@ -110,8 +110,13 @@ namespace libsnark {
 
 
         end = clock();
-        dur = (double)(end - start);
-        fout << (dur/CLOCKS_PER_SEC) << "\t" << tally_cp.constraint_system.num_constraints() << "\n" << std::flush;
+        dur = (double) (end - start);
+
+        fout << wordsize << "\t";
+        fout << arity << "\t";
+        fout << csize << "\t";
+        fout << tally_cp.constraint_system.num_constraints() << "\t";
+        fout << (dur / CLOCKS_PER_SEC) << "\n";
         fout.close();
 
         if (test_serialization) {
