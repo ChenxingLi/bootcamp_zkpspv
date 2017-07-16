@@ -8,8 +8,8 @@
 
 # To override these, use "make OPTFLAGS=..." etc.
 CURVE = BN128
-OPTFLAGS = -O2 -march=native -mtune=native -fopenmp
-FEATUREFLAGS = -DUSE_ASM -DMONTGOMERY_OUTPUT -DMULTICORE
+OPTFLAGS = -O2 -march=native -mtune=native
+FEATUREFLAGS = -DUSE_ASM -DMONTGOMERY_OUTPUT
 
 
 INSTALL_PATH = /usr/local
@@ -17,6 +17,8 @@ INSTALL_PATH = /usr/local
 CXXFLAGS += -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-comment -Wfatal-errors $(OPTFLAGS) $(FEATUREFLAGS) -DCURVE_$(CURVE)
 
 CXXFLAGS += -I$(INSTALL_PATH)/include -I$(INSTALL_PATH)/include/libsnark
+
+CXXFLAGS += -fopenmp -DMULTICORE
 LDFLAGS += -L$(INSTALL_PATH)/lib
 LDLIBS += -lgmpxx -lgmp -lboost_program_options
 # OpenSSL and its dependencies (needed explicitly for static builds):

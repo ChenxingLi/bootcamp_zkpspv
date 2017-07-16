@@ -33,15 +33,10 @@ namespace libsnark {
         bool all_accept = true;
 
         enter_block("Generate all messages");
-        size_t tree_size = 0;
-        size_t nodes_in_layer = 1;
-        for (size_t layer = 0; layer <= depth; ++layer) {
-            tree_size += nodes_in_layer;
-            nodes_in_layer *= arity;
-        }
+        size_t tree_size = depth + 1;
         std::vector<size_t> tree_elems(tree_size);
         for (size_t i = 0; i < tree_size; ++i) {
-            tree_elems[i] = std::rand() % 10;
+            tree_elems[i] = (size_t)(std::rand() % 10);
             printf("tree_elems[%zu] = %zu\n", i, tree_elems[i]);
         }
         leave_block("Generate all messages");
@@ -71,85 +66,59 @@ namespace libsnark {
         }
 
         std::shared_ptr<r1cs_pcd_message<FieldT> > base_msg = tally.get_base_case_message();
-        nodes_in_layer /= arity;
 
-        long layer = depth;
-        size_t i = 0;
-
-        const size_t cur_idx = 0;
-
-        std::vector<std::shared_ptr<r1cs_pcd_message<FieldT> > > msgs(arity, base_msg);
-        std::vector<r1cs_sp_ppzkpcd_proof<PCD_ppT> > proofs(arity);
-
-        const bool base_case = (arity * cur_idx + arity >= tree_size);
-
-        if (!base_case) {
-            for (size_t i = 0; i < arity; ++i) {
-                msgs[i] = tree_messages[arity * cur_idx + i + 1];
-                proofs[i] = tree_proofs[arity * cur_idx + i + 1];
+        for (size_t cur_idx = 0; cur_idx < tree_size; cur_idx ++) {
+            std::vector<std::shared_ptr<r1cs_pcd_message<FieldT> > > msgs(arity, base_msg);
+            std::vector<r1cs_sp_ppzkpcd_proof<PCD_ppT> > proofs(arity);
+            if(cur_idx > 0) {
+                msgs[0] = tree_messages[cur_idx  - 1];
+                proofs[0] = tree_proofs[cur_idx  - 1];
             }
+
+            std::shared_ptr<r1cs_pcd_local_data<FieldT> > ld;
+            ld.reset(new tally_pcd_local_data<FieldT>(tree_elems[cur_idx]));
+            tally.generate_r1cs_witness(msgs, ld);
+
+            const r1cs_pcd_compliance_predicate_primary_input<FieldT> tally_primary_input(tally.get_outgoing_message());
+            const r1cs_pcd_compliance_predicate_auxiliary_input<FieldT> tally_auxiliary_input(msgs, ld,
+                                                                                              tally.get_witness());
+
+            print_header("R1CS ppzkPCD Prover");
+            r1cs_sp_ppzkpcd_proof<PCD_ppT> proof = r1cs_sp_ppzkpcd_prover<PCD_ppT>(keypair.pk, tally_primary_input,
+                                                                                   tally_auxiliary_input, proofs);
+
+            if (test_serialization) {
+                enter_block("Test serialization of proof");
+                proof = reserialize<r1cs_sp_ppzkpcd_proof<PCD_ppT> >(proof);
+                leave_block("Test serialization of proof");
+            }
+
+            tree_proofs[cur_idx] = proof;
+            tree_messages[cur_idx] = tally.get_outgoing_message();
+
+            print_header("R1CS ppzkPCD Verifier");
+            const r1cs_sp_ppzkpcd_primary_input<PCD_ppT> pcd_verifier_input(tree_messages[cur_idx]);
+            const bool ans = r1cs_sp_ppzkpcd_verifier<PCD_ppT>(keypair.vk, pcd_verifier_input, tree_proofs[cur_idx]);
+
+            print_header("R1CS ppzkPCD Online Verifier");
+            const bool ans2 = r1cs_sp_ppzkpcd_online_verifier<PCD_ppT>(pvk, pcd_verifier_input, tree_proofs[cur_idx]);
+            assert(ans == ans2);
+
+            all_accept = all_accept && ans;
+
+            printf("\n");
+            for (size_t i = 0; i < arity; ++i) {
+                printf("Message %zu was:\n", i);
+                msgs[i]->print();
+            }
+
+            printf("Summand at this node:\n%zu\n", tree_elems[cur_idx]);
+            printf("Outgoing message is:\n");
+            tree_messages[cur_idx]->print();
+            printf("\n");
+            printf("Current node = %zu. Current proof verifies = %s\n", cur_idx, ans ? "YES" : "NO");
+            printf("\n\n\n ================================================================================\n\n\n");
         }
-
-        std::shared_ptr<r1cs_pcd_local_data<FieldT> > ld;
-        ld.reset(new tally_pcd_local_data<FieldT>(tree_elems[cur_idx]));
-        tally.generate_r1cs_witness(msgs, ld);
-
-        const r1cs_pcd_compliance_predicate_primary_input<FieldT> tally_primary_input(tally.get_outgoing_message());
-        const r1cs_pcd_compliance_predicate_auxiliary_input<FieldT> tally_auxiliary_input(msgs, ld,
-                                                                                          tally.get_witness());
-
-        double dur;
-        clock_t start, end;
-        start = clock();
-        std::ofstream fout;
-        fout.open("out.txt", std::ios_base::out | std::ios_base::app);
-
-        print_header("R1CS ppzkPCD Prover");
-        r1cs_sp_ppzkpcd_proof<PCD_ppT> proof = r1cs_sp_ppzkpcd_prover<PCD_ppT>(keypair.pk, tally_primary_input,
-                                                                               tally_auxiliary_input, proofs);
-
-
-        end = clock();
-        dur = (double) (end - start);
-
-        fout << wordsize << "\t";
-        fout << arity << "\t";
-        fout << csize << "\t";
-        fout << tally_cp.constraint_system.num_constraints() << "\t";
-        fout << (dur / CLOCKS_PER_SEC) << "\n";
-        fout.close();
-
-        if (test_serialization) {
-            enter_block("Test serialization of proof");
-            proof = reserialize<r1cs_sp_ppzkpcd_proof<PCD_ppT> >(proof);
-            leave_block("Test serialization of proof");
-        }
-
-        tree_proofs[cur_idx] = proof;
-        tree_messages[cur_idx] = tally.get_outgoing_message();
-
-        print_header("R1CS ppzkPCD Verifier");
-        const r1cs_sp_ppzkpcd_primary_input<PCD_ppT> pcd_verifier_input(tree_messages[cur_idx]);
-        const bool ans = r1cs_sp_ppzkpcd_verifier<PCD_ppT>(keypair.vk, pcd_verifier_input, tree_proofs[cur_idx]);
-
-        print_header("R1CS ppzkPCD Online Verifier");
-        const bool ans2 = r1cs_sp_ppzkpcd_online_verifier<PCD_ppT>(pvk, pcd_verifier_input, tree_proofs[cur_idx]);
-        assert(ans == ans2);
-
-        all_accept = all_accept && ans;
-
-        printf("\n");
-        for (size_t i = 0; i < arity; ++i) {
-            printf("Message %zu was:\n", i);
-            msgs[i]->print();
-        }
-        printf("Summand at this node:\n%zu\n", tree_elems[cur_idx]);
-        printf("Outgoing message is:\n");
-        tree_messages[cur_idx]->print();
-        printf("\n");
-        printf("Current node = %zu. Current proof verifies = %s\n", cur_idx, ans ? "YES" : "NO");
-        printf("\n\n\n ================================================================================\n\n\n");
-
 
         leave_block("Call to run_r1cs_sp_ppzkpcd_tally_example");
 
