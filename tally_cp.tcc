@@ -240,6 +240,8 @@ void tally_cp_handler<FieldT>::generate_r1cs_witness(const std::vector<std::shar
 {
     base_handler::generate_r1cs_witness(incoming_messages, local_data);
 
+    pb.val(outgoing_message->type) = FieldT::zero();
+
     for (size_t i = 0; i < this->max_arity; ++i)
     {
         pack_sum_in[i].generate_r1cs_witness_from_bits();
@@ -278,7 +280,7 @@ void tally_cp_handler<FieldT>::generate_r1cs_witness(const std::vector<std::shar
 template<typename FieldT>
 std::shared_ptr<r1cs_pcd_message<FieldT> > tally_cp_handler<FieldT>::get_base_case_message() const
 {
-    const size_t type = 1;
+    const size_t type = 0;
     const size_t sum = 0;
     const size_t count = 0;
 
