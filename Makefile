@@ -10,7 +10,7 @@
 CURVE = BN128
 OPTFLAGS = -O2 -march=native -mtune=native
 FEATUREFLAGS = -DUSE_ASM -DMONTGOMERY_OUTPUT -DDEBUG
-
+CXX = g++
 
 INSTALL_PATH = /usr/local
 # Initialize this using "CXXFLAGS=... make". The makefile appends to that.
@@ -37,13 +37,13 @@ all: $(EXECUTABLES)
 
 
 main.o: main.cpp
-    $(CXX) -c main.cpp -o main.o $(CXXFLAGS)
+    $(CXX) -c main.cpp $(CXXFLAGS)
 
 test.o: test.cpp
-    $(CXX) -c test.cpp -o test.o $(CXXFLAGS)
+    $(CXX) -c test.cpp $(CXXFLAGS)
 
 sha256.o: sha256.cpp
-    $(CXX) -c sha256.cpp -o sha256.o $(CXXFLAGS)
+    $(CXX) -c sha256.cpp $(CXXFLAGS)
 
 $(EXECUTABLES): %: %.o
 	$(CXX) -o $@   $@.o $(SRC_OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
