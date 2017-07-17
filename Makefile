@@ -25,7 +25,7 @@ LDLIBS += -lgmpxx -lgmp -lboost_program_options
 LDLIBS += -lcrypto -ldl -lz -lsnark
 
 EXECUTABLES = \
-	main
+	main \
 	test
 
 EXEC_OBJS =$(patsubst %,%.o,$(EXECUTABLES))
