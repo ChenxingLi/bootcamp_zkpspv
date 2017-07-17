@@ -45,8 +45,8 @@ test.o: test.cpp
 sha256.o: sha256.cpp
 	$(CXX) -c sha256.cpp $(CXXFLAGS)
 
-$(EXECUTABLES): %: %.o
-	$(CXX) -o $@   $@.o $(SRC_OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
+$(EXECUTABLES): %: %.o  sha256.o
+	$(CXX) -o $@   $@.o sha256.o $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
 
 # Clean all, including locally-compiled dependencies
 clean: 
