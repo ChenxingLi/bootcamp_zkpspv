@@ -6,6 +6,8 @@
 #include "tool.h"
 #include <iostream>
 #include "common/default_types/r1cs_ppzkpcd_pp.hpp"
+#include "common/default_types/r1cs_ppzksnark_pp.hpp"
+
 #include "algebra/curves/public_params.hpp"
 
 int main() {
@@ -17,7 +19,9 @@ int main() {
     sha256.Finalize(ans.begin());
     std::cout<< ans.GetHexStr() <<std::endl;
 
+    std::cout << sizeof(size_t) <<std::endl;
 
     std::cout << libsnark::Fr<typename libsnark::default_r1cs_ppzkpcd_pp::curve_A_pp>::capacity()<<std::endl;
+    std::cout << libsnark::Fr<libsnark::default_r1cs_ppzksnark_pp>::capacity()<<std::endl;
     return 0;
 }
