@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <string>
+#include <cstring>
 
 const signed char p_util_hexdigit[256] =
         {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
