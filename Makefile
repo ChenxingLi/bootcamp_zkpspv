@@ -26,6 +26,7 @@ LDLIBS += -lcrypto -ldl -lz -lsnark
 
 EXECUTABLES = \
 	main
+	test
 
 EXEC_OBJS =$(patsubst %,%.o,$(EXECUTABLES))
 
