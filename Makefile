@@ -37,13 +37,13 @@ all: $(EXECUTABLES)
 
 
 main.o: main.cpp
-    $(CXX) -c main.cpp $(CXXFLAGS)
+	$(CXX) -c main.cpp $(CXXFLAGS)
 
 test.o: test.cpp
-    $(CXX) -c test.cpp $(CXXFLAGS)
+	$(CXX) -c test.cpp $(CXXFLAGS)
 
 sha256.o: sha256.cpp
-    $(CXX) -c sha256.cpp $(CXXFLAGS)
+	$(CXX) -c sha256.cpp $(CXXFLAGS)
 
 $(EXECUTABLES): %: %.o
 	$(CXX) -o $@   $@.o $(SRC_OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
