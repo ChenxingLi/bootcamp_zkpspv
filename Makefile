@@ -28,14 +28,18 @@ EXECUTABLES = \
 	main \
 	test
 
+SRCS = \
+    sha256
+
 EXEC_OBJS =$(patsubst %,%.o,$(EXECUTABLES))
+SRC_OBJS = $(patsubst %,%.o,$(SRCS))
 
 all: $(EXECUTABLES)
 
 # In order to detect changes to #include dependencies. -MMD below generates a .d file for each .o file. Include the .d file.
--include $(patsubst %.o,%.d, $(EXEC_OBJS) )
+-include $(patsubst %.o,%.d, $(EXEC_OBJS) $(SRCS))
 
-$(EXEC_OBJS): %.o: %.cpp
+$(EXEC_OBJS) $(SRCS): %.o: %.cpp
 	$(CXX) -o $@   $< -c -MMD $(CXXFLAGS)
 
 $(EXECUTABLES): %: %.o $(SRC_OBJS)
