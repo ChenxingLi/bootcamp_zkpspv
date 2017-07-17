@@ -110,11 +110,10 @@ public:
 };
 
 } // libsnark
-
-#ifndef IDE
-#include "tally_cp.tcc"
-#else
+#ifdef CODE_READ
 #include "zk_proof_systems/pcd/r1cs_pcd/compliance_predicate/examples/tally_cp.tcc"
+#else
+#include "tally_cp.tcc"
 #endif
 
 #endif // TALLY_CP_HPP_

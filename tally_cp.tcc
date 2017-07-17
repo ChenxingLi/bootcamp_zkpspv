@@ -11,6 +11,7 @@
  * @copyright  MIT license (see LICENSE file)
  *****************************************************************************/
 
+
 #ifndef TALLY_CP_TCC_
 #define TALLY_CP_TCC_
 
@@ -18,6 +19,7 @@
 #include <functional>
 #include <algebra/fields/field_utils.hpp>
 #include "tally_cp.hpp"
+
 
 namespace libsnark {
 
