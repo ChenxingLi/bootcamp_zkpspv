@@ -13,7 +13,7 @@ int main() {
     data[0] = '1';
     sha256.Write(data, 1);
     sha256.Finalize(ans.begin());
-    std::cout<< ans.ToString() <<std::endl;
+    std::cout<< ans.GetHexStr() <<std::endl;
 
     return 0;
 }

@@ -79,6 +79,13 @@ public:
         return std::string(psz, psz + sizeof(data) * 2);
     }
 
+    std::string GetHexStr() const {
+        char psz[sizeof(data) * 2 + 1];
+        for (unsigned int i = 0; i < sizeof(data); i++)
+            sprintf(psz + i * 2, "%02x", data[i]);
+        return std::string(psz, psz + sizeof(data) * 2);
+    }
+
     void SetHex(const char *psz) {
 
         memset(data, 0, sizeof(data));
