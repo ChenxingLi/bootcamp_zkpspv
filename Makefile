@@ -43,7 +43,7 @@ $(EXEC_OBJS) $(SRCS_OBJS): %.o: %.cpp
 	$(CXX) -o $@   $< -c -MMD $(CXXFLAGS)
 
 $(EXECUTABLES): %: %.o $(SRC_OBJS)
-	$(CXX) -o $@   $@.o $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
+	$(CXX) -o $@   $@.o $(SRC_OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
 
 # Clean all, including locally-compiled dependencies
 clean: 
