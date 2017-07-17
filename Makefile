@@ -28,28 +28,28 @@ EXECUTABLES = \
 	main \
 	test
 
-SRCS = \
-    sha256
-
 EXEC_OBJS =$(patsubst %,%.o,$(EXECUTABLES))
-SRC_OBJS = $(patsubst %,%.o,$(SRCS))
 
 all: $(EXECUTABLES)
 
 # In order to detect changes to #include dependencies. -MMD below generates a .d file for each .o file. Include the .d file.
--include $(patsubst %.o,%.d, $(EXEC_OBJS) $(SRCS))
+-include $(patsubst %.o,%.d, $(EXEC_OBJS))
 
-$(EXEC_OBJS): %.o: %.cpp
-	$(CXX) -o $@   $< -c -MMD $(CXXFLAGS)
 
-$(SRCS_OBJS): %.o: %.cpp
-	$(CXX) -o $@   $< -c -MMD $(CXXFLAGS)
+main.o: main.cpp
+    $(CXX) -c main.cpp -o main.o $(CXXFLAGS)
 
-#$(EXECUTABLES): %: %.o
-#	$(CXX) -o $@   $@.o $(SRC_OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
+test.o: test.cpp
+    $(CXX) -c test.cpp -o test.o $(CXXFLAGS)
+
+sha256.o: sha256.cpp
+    $(CXX) -c sha256.cpp -o sha256.o $(CXXFLAGS)
+
+$(EXECUTABLES): %: %.o
+	$(CXX) -o $@   $@.o $(SRC_OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
 
 # Clean all, including locally-compiled dependencies
 clean: 
-	$(RM) $(EXEC_OBJS) $(EXECUTABLES)
+	$(RM) *.o $(EXECUTABLES)
 
 .PHONY: clean
