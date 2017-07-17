@@ -39,11 +39,14 @@ all: $(EXECUTABLES)
 # In order to detect changes to #include dependencies. -MMD below generates a .d file for each .o file. Include the .d file.
 -include $(patsubst %.o,%.d, $(EXEC_OBJS) $(SRCS))
 
-$(EXEC_OBJS) $(SRCS_OBJS): %.o: %.cpp
+$(EXEC_OBJS): %.o: %.cpp
 	$(CXX) -o $@   $< -c -MMD $(CXXFLAGS)
 
-$(EXECUTABLES): %: %.o $(SRC_OBJS)
-	$(CXX) -o $@   $@.o $(SRC_OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
+$(SRCS_OBJS): %.o: %.cpp
+	$(CXX) -o $@   $< -c -MMD $(CXXFLAGS)
+
+#$(EXECUTABLES): %: %.o
+#	$(CXX) -o $@   $@.o $(SRC_OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
 
 # Clean all, including locally-compiled dependencies
 clean: 
