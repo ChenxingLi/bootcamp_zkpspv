@@ -28,8 +28,7 @@ EXECUTABLES = \
 	main \
 	test
 
-SRCS = \
-    sha256
+SRCS = sha256
 
 EXEC_OBJS =$(patsubst %,%.o,$(EXECUTABLES))
 SRC_OBJS = $(patsubst %,%.o,$(SRCS))

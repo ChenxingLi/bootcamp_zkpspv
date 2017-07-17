@@ -10,7 +10,7 @@ int main() {
     CSHA256 sha256;
     uint256 ans;
     unsigned char data[1];
-    data[0] = '1';
+    data[0] = '@';
     sha256.Write(data, 1);
     sha256.Finalize(ans.begin());
     std::cout<< ans.GetHexStr() <<std::endl;
