@@ -76,6 +76,12 @@ namespace libsnark {
             for (size_t i = 0; i < this->msgpack_out->fully_packed.size(); i++) {
                 this->pb.val(this->msgpack_out->fully_packed[i]).as_bigint().print_hex();
             }
+
+            for (size_t i = 0; i < this->msgpack_out->unpacked.size(); i++) {
+                std::cout << (this->pb.val(this->msgpack_out->unpacked[i])== FieldT::zero() ? 0 : 1);
+            }
+            std::cout<< std::endl;
+
             for (size_t i = 0; i < this->msgpack_out->repacked.size(); i++) {
                 this->pb.val(this->msgpack_out->repacked[i]).as_bigint().print_hex();
             }
