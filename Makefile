@@ -42,13 +42,13 @@ all: $(EXECUTABLES)
 -include $(patsubst %.o,%.d, $(EXEC_OBJS))
 
 
-main.o: main.cpp
+main.o: main.cpp $(DEPENDS)
 	$(CXX) -c main.cpp $(CXXFLAGS)
 
-test.o: test.cpp
+test.o: test.cpp $(DEPENDS)
 	$(CXX) -c test.cpp $(CXXFLAGS)
 
-sha256.o: sha256.cpp
+sha256.o: sha256.cpp $(DEPENDS)
 	$(CXX) -c sha256.cpp $(CXXFLAGS)
 
 $(EXECUTABLES): %: %.o  sha256.o $(DEPENDS)
