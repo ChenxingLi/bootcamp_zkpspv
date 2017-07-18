@@ -66,7 +66,7 @@ namespace libsnark {
 //                    " header verifier"
 //            ));
 
-            sha256_2.reset(new sha256_2_function_check_gadget<FieldT>(pb,
+            sha256_2.reset(new sha256_2_function_check_gadget<FieldT>(this->pb,
                                                                       std::dynamic_pointer_cast<zkspv_pcd_local_data_variable<FieldT> >(
                                                                               this->local_data)->packed_local_data,
                                                                       head_ver_out, " sha2 gadget"));
