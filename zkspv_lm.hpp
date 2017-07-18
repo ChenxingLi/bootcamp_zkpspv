@@ -64,7 +64,7 @@ namespace libsnark {
                 }
             }
             if (count != 0) {
-                result.push_back(tmp);
+                result.push_back(sum);
             }
             assert(result.size() == div_ceil(unpacked_data.size() * 8, capacity));
             return result;
@@ -87,16 +87,19 @@ namespace libsnark {
         r1cs_variable_assignment<FieldT> as_r1cs_variable_assignment() const {
             size_t count = 0;
             r1cs_variable_assignment<FieldT> result;
-            FieldT tmp = FieldT::zero();
+            FieldT base = FieldT::one();
+            FieldT sum = FieldT::zero();
             for (const uint8_t *p = header.begin(); p != header.end(); p++) {
                 for (size_t i = 0; i < 8; i++) {
-                    tmp += tmp + ((*p) >> i & 0x1 ? FieldT::one() : FieldT::zero());
+                    sum += ((*p) >> i & 0x1 ? base : FieldT::zero());
+                    base += base;
                 }
                 count++;
                 if (count == 4) {
                     count = 0;
-                    result.push_back(tmp);
-                    tmp = FieldT::zero();
+                    result.push_back(sum);
+                    sum = FieldT::zero();
+                    base = FieldT::one();
                 }
             }
             assert(result.size() == 20);
