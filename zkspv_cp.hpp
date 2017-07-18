@@ -60,7 +60,7 @@ namespace libsnark {
                                    const std::shared_ptr<r1cs_pcd_local_data<FieldT> > &local_data) {
 
             std::vector<std::shared_ptr<r1cs_pcd_message<FieldT> > > incoming_messages(1, incoming_message);
-            base_handler.generate_r1cs_witness(incoming_messages, local_data);
+            base_handler::generate_r1cs_witness(incoming_messages, local_data);
             this->outgoing_message->generate_r1cs_witness(outcoming_message);
             this->msgpack_in->generate_r1cs_witness();
             this->msgpack_out->generate_r1cs_constraints();
