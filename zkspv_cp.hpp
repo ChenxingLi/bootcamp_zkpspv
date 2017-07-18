@@ -54,8 +54,9 @@ namespace libsnark {
                                                                      capacity,
                                                                      "out_message"));
 
-            pb_variable_array<FieldT> head_ver_in(msgpack_in->repacked.begin() + 8, msgpack_in.begin() + 16);
-            pb_variable_array<FieldT> head_ver_out(msgpack_out->repacked.begin() + 8, msgpack_out.begin() + 16);
+            pb_variable_array<FieldT> head_ver_in(msgpack_in->repacked.begin() + 8, msgpack_in->repacked.begin() + 16);
+            pb_variable_array<FieldT> head_ver_out(msgpack_out->repacked.begin() + 8,
+                                                   msgpack_out->repacked.begin() + 16);
 //
 //            this->header_verifier.reset(new header_verifier_gadget<FieldT>(
 //                    this->pb,
