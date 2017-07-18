@@ -48,15 +48,18 @@ namespace libsnark {
         r1cs_variable_assignment<FieldT> payload_as_r1cs_variable_assignment() const {
             size_t count = 0;
             r1cs_variable_assignment<FieldT> result;
-            FieldT tmp = FieldT::zero();
+            FieldT base = FieldT::one();
+            FieldT sum = FieldT::zero();
             for (std::vector<uint8_t>::const_iterator it = unpacked_data.begin(); it != unpacked_data.end(); it++) {
                 for (size_t i = 0; i < 8; i++) {
-                    tmp += tmp + ((*it) >> i & 0x1 ? FieldT::one() : FieldT::zero());
+                    sum += ((*it) >> i & 0x1 ? base : FieldT::zero());
                     count++;
+                    base += base;
                     if (count == capacity) {
                         count = 0;
-                        result.push_back(tmp);
-                        tmp = FieldT::zero();
+                        base = FieldT::one();
+                        result.push_back(sum);
+                        sum = FieldT::zero();
                     }
                 }
             }
