@@ -54,11 +54,12 @@ void packcheck() {
 //    BlockHash test(
 //            "18241824182418241824182418241824182418241824182418241824182418241824182418241824182418241824182418241824182418241824182418241824");
 
-    BlockHash test("00ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff00");
+    BlockHash test("00ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff0000ffff00");
 
     CSHA256 sha2;
     uint256 ans;
-    sha2.Write(test.begin(), 64);
+    sha2.Write(test.begin(), 32);
+    sha2.Write(test.begin(), 32);
     sha2.FinalizeNoPadding(ans.begin());
     std::cout << ans.GetHexInv() << std::endl;
 
