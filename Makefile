@@ -30,6 +30,12 @@ EXECUTABLES = \
 
 EXEC_OBJS =$(patsubst %,%.o,$(EXECUTABLES))
 
+DEPENDS = \
+	zkspv_cp.hpp \
+	zkspv_lm.hpp
+
+
+
 all: $(EXECUTABLES)
 
 # In order to detect changes to #include dependencies. -MMD below generates a .d file for each .o file. Include the .d file.
@@ -45,7 +51,7 @@ test.o: test.cpp
 sha256.o: sha256.cpp
 	$(CXX) -c sha256.cpp $(CXXFLAGS)
 
-$(EXECUTABLES): %: %.o  sha256.o
+$(EXECUTABLES): %: %.o  sha256.o $(DEPENDS)
 	$(CXX) -o $@   $@.o sha256.o $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
 
 # Clean all, including locally-compiled dependencies
