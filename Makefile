@@ -32,7 +32,8 @@ EXEC_OBJS =$(patsubst %,%.o,$(EXECUTABLES))
 
 DEPENDS = \
 	zkspv_cp.hpp \
-	zkspv_lm.hpp
+	zkspv_lm.hpp \
+	sha256_2_gadget.hpp
 
 
 
