@@ -28,6 +28,8 @@ void hashcheck() {
 
 
 void packcheck() {
+    /****** Set up********/
+
     typedef default_r1cs_ppzkpcd_pp PCD_ppT;
 
     start_profiling();
@@ -37,7 +39,8 @@ void packcheck() {
     const size_t type = 1;
     const size_t capacity = FieldT::capacity();
 
-    ;
+    /****** Build Circuit ********/
+
     zkspv_cp_handler<FieldT> zkspv(type, capacity);
     zkspv.generate_r1cs_constraints();
 

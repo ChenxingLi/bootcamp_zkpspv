@@ -6,7 +6,7 @@
 #define BOOTCAMP_ZKPSPV_ZKSPV_CP_HPP
 
 #include "zkspv_lm.hpp"
-#include "header-verifier/header_verifier_gadget.hpp"
+#include "sha256_2_gadget.hpp"
 
 namespace libsnark {
     template<typename FieldT>
@@ -17,7 +17,8 @@ namespace libsnark {
         std::shared_ptr<zkspv_message_packer<FieldT> > msgpack_in;
         std::shared_ptr<zkspv_message_packer<FieldT> > msgpack_out;
 
-        std::shared_ptr<header_verifier_gadget<FieldT> > header_verifier;
+//        std::shared_ptr<header_verifier_gadget<FieldT> > header_verifier;
+        std::shared_ptr<sha256_2_function_check_gadget<FieldT> > sha256_2;
 
 
         zkspv_cp_handler(const size_t type,
@@ -55,33 +56,40 @@ namespace libsnark {
 
             pb_variable_array<FieldT> head_ver_in(msgpack_in->repacked.begin() + 8, msgpack_in->repacked.end());
             pb_variable_array<FieldT> head_ver_out(msgpack_out->repacked.begin() + 8, msgpack_out->repacked.end());
+//
+//            this->header_verifier.reset(new header_verifier_gadget<FieldT>(
+//                    this->pb,
+//                    head_ver_in,
+//                    std::dynamic_pointer_cast<zkspv_pcd_local_data_variable<FieldT> >(
+//                            this->local_data)->packed_local_data,
+//                    head_ver_out,
+//                    " header verifier"
+//            ));
 
-            this->header_verifier.reset(new header_verifier_gadget<FieldT>(
-                    this->pb,
-                    head_ver_in,
-                    std::dynamic_pointer_cast<zkspv_pcd_local_data_variable<FieldT> >(
-                            this->local_data)->packed_local_data,
-                    head_ver_out,
-                    " header verifier"
-            ));
+            sha256_2.reset(new sha256_2_function_check_gadget<FieldT>(pb,
+                                                                      std::dynamic_pointer_cast<zkspv_pcd_local_data_variable<FieldT> >(
+                                                                              this->local_data)->packed_local_data,
+                                                                      head_ver_out, " sha2 gadget"));
         }
 
         void generate_r1cs_constraints() {
             this->msgpack_in->generate_r1cs_constraints();
             this->msgpack_out->generate_r1cs_constraints();
-            this->header_verifier->generate_r1cs_constraints();
+            this->sha256_2->generate_r1cs_constraints();
+//            this->header_verifier->generate_r1cs_constraints();
         }
 
         void generate_r1cs_witness(const std::shared_ptr<r1cs_pcd_message<FieldT> > &incoming_message,
                                    const std::shared_ptr<r1cs_pcd_message<FieldT> > &outcoming_message,
                                    const std::shared_ptr<r1cs_pcd_local_data<FieldT> > &local_data) {
+            base_handler::generate_r1cs_witness(incoming_messages, local_data);
 
             std::vector<std::shared_ptr<r1cs_pcd_message<FieldT> > > incoming_messages(1, incoming_message);
-            base_handler::generate_r1cs_witness(incoming_messages, local_data);
             this->outgoing_message->generate_r1cs_witness(outcoming_message);
             this->msgpack_in->generate_r1cs_witness();
             this->msgpack_out->generate_r1cs_witness();
-            this->header_verifier->generate_r1cs_witness();
+            this->sha256_2->generate_r1cs_witness();
+//            this->header_verifier->generate_r1cs_witness();
         }
 
         std::shared_ptr<r1cs_pcd_message<FieldT> > get_base_case_message() const;
