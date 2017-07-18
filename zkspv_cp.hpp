@@ -18,10 +18,10 @@ namespace libsnark {
 
 
         zkspv_cp_handler(const size_t type,
-                                                   const size_t capacity,
-                                                   const size_t max_arity = 1,
-                                                   const bool relies_on_same_type_inputs = false,
-                                                   const std::set<size_t> accepted_input_types = std::set<size_t>()) :
+                         const size_t capacity,
+                         const size_t max_arity = 1,
+                         const bool relies_on_same_type_inputs = false,
+                         const std::set<size_t> accepted_input_types = std::set<size_t>()) :
                 compliance_predicate_handler<FieldT, protoboard<FieldT> >(protoboard<FieldT>(),
                                                                           type * 100,
                                                                           type,
@@ -41,13 +41,14 @@ namespace libsnark {
             this->local_data.reset(new zkspv_pcd_local_data_variable<FieldT>(this->pb, "local_data"));
 
             this->msgpack_in.reset(new zkspv_message_packer<FieldT>(this->pb,
-                                                            std::dynamic_pointer_cast<zkspv_pcd_message_variable<FieldT> >(
-                                                                    this->incoming_messages[0])->packed_message,
-                                                            capacity, "in_message"));
+                                                                    std::dynamic_pointer_cast<zkspv_pcd_message_variable<FieldT> >(
+                                                                            this->incoming_messages[0])->packed_message,
+                                                                    capacity, "in_message"));
             this->msgpack_out.reset(new zkspv_message_packer<FieldT>(this->pb,
-                                                             std::dynamic_pointer_cast<zkspv_pcd_message_variable<FieldT> >(
-                                                                     this->outgoing_message)->packed_message, capacity,
-                                                             "out_message"));
+                                                                     std::dynamic_pointer_cast<zkspv_pcd_message_variable<FieldT> >(
+                                                                             this->outgoing_message)->packed_message,
+                                                                     capacity,
+                                                                     "out_message"));
         }
 
         void generate_r1cs_constraints() {
@@ -71,8 +72,9 @@ namespace libsnark {
 
         void is_satisfied() {
             assert(this->pb.val(this->incoming_messages[0]->all_vars[1]) == FieldT::zero());
-            for(size_t i =0; i<this->msgpack_out->repacked.size(); i++){
-                this->pb.val(this->msgpack_out->repacked[i]).as_bigint().print();
+            std::cout << "size:" << this->msgpack_out->repacked.size() << std::endl;
+            for (size_t i = 0; i < this->msgpack_out->repacked.size(); i++) {
+                this->pb.val(this->msgpack_out->repacked[i]).as_bigint().print_hex();
             }
             assert(this->pb.is_satisfied());
         }
