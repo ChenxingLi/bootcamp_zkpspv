@@ -57,13 +57,13 @@ namespace libsnark {
             hash_packer.reset(new multipacking_gadget<FieldT>(pb, unpacked_hash->bits, packed_hash, 32,
                                                               FMT(annotation_prefix, " hash packer")));
 
-            pb_variable_array<FieldT> chunk1(unpacked_hash->bits.begin(), unpacked_hash->bits.begin() + 512);
+            pb_variable_array<FieldT> chunk1(unpacked_head->bits.begin(), unpacked_head->bits.begin() + 512);
             byteReverse(chunk1);
             gadget00.reset(
                     new sha256_compression_function_gadget<FieldT>(pb, SHA256_default_IV<FieldT>(pb), chunk1, *midans1,
                                                                    FMT(this->annotation_prefix, " round00")));
 
-            pb_variable_array<FieldT> chunk2(unpacked_hash->bits.begin() + 512, unpacked_hash->bits.end());
+            pb_variable_array<FieldT> chunk2(unpacked_head->bits.begin() + 512, unpacked_head->bits.end());
             byteReverse(chunk2);
             finalize(chunk2, 640, 320, ZERO);
             gadget01.reset(new sha256_compression_function_gadget<FieldT>(pb, midans1->bits, chunk2, *midans2,
