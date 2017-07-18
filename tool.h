@@ -11,6 +11,19 @@
 #include <string>
 #include <cstring>
 
+#ifdef DEBUG
+#   define ASSERT(condition, message) \
+    do { \
+        if (! (condition)) { \
+            std::cerr << "Assertion `" #condition "` failed in " << __FILE__ \
+                      << " line " << __LINE__ << ": " << message << std::endl; \
+            std::terminate(); \
+        } \
+    } while (false)
+#else
+#   define ASSERT(condition, message) do { } while (false)
+#endif
+
 const signed char p_util_hexdigit[256] =
         {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
          -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -112,6 +125,35 @@ public:
                 p1++;
             }
         }
+    }
+
+    void SetHexInv(const char *psz) {
+
+        memset(data, 0, sizeof(data));
+
+        // skip leading spaces
+        while (isspace(*psz))
+            psz++;
+
+        // skip 0x
+        if (psz[0] == '0' && tolower(psz[1]) == 'x')
+            psz += 2;
+
+        // hex string to uint
+        const char *pbegin = psz;
+        while (HexDigit(*psz) != -1)
+            psz++;
+        psz--;
+        unsigned char *pstart = (unsigned char *) data;
+        unsigned char *pend = pstart + WIDTH;
+        unsigned char *p1=pend - 1;
+        while (psz >= pbegin && p1 >= pstart) {
+            *p1 = HexDigit(*psz--);
+            if (psz >= pbegin) {
+                *p1 |= ((unsigned char) HexDigit(*psz--) << 4);
+                p1--;
+            }
+        }
 
     }
 
@@ -166,5 +208,19 @@ public:
 
     explicit uint256(const std::vector<unsigned char> &vch) : base_blob<256>(vch) {}
 };
+
+class BlockHeader : public base_blob<640> {
+public:
+    BlockHeader() {}
+
+    BlockHeader(const base_blob<640> &b) : base_blob<640>(b) {}
+
+    explicit BlockHeader(const std::vector<unsigned char> &vch) : base_blob<640>(vch) {}
+};
+
+long long div_ceil(long long x, long long y) {
+    return (x + y - 1) / y;
+}
+
 
 #endif //BOOTCAMP_ZKPSPV_TOOL_H
