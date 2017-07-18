@@ -128,8 +128,6 @@ namespace libsnark {
             assert(vch.size() == 512);
             return;
         }
-
-        void check
     };
 }
 
