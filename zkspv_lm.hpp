@@ -11,6 +11,10 @@
 #include "tool.h"
 #include <vector>
 
+#ifdef CODE_READ
+using namespace libsnark;
+#endif
+
 #define TIMESTAMPS 11
 #define MSG_LEN (256+256+11*32)
 
@@ -159,11 +163,11 @@ namespace libsnark {
         std::shared_ptr<multipacking_gadget<FieldT> > repacker;
     public:
         zkspv_message_packer(protoboard<FieldT> &pb,
-                             pb_variable_array<FieldT> &fully_packed,
+                             pb_variable_array<FieldT> &fully_packed_in,
                              size_t capacity,
                              const std::string &annotation_prefix) :
                 gadget<FieldT>(pb, annotation_prefix), capacity(capacity),
-                fully_packed(fully_packed), repacked(repacked) {
+                fully_packed(fully_packed_in) {
             unpacked.allocate(pb, MSG_LEN, " unpacked message");
             repacked.allocate(pb, MSG_LEN / 32, " repacked message");
             unpacker.reset(new multipacking_gadget<FieldT>(pb, unpacked, fully_packed, capacity,

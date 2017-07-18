@@ -42,7 +42,7 @@ all: $(EXECUTABLES)
 -include $(patsubst %.o,%.d, $(EXEC_OBJS))
 
 
-main.o: main.cpp $(DEPENDS)
+main.o: main.cpp
 	$(CXX) -c main.cpp $(CXXFLAGS)
 
 test.o: test.cpp $(DEPENDS)
