@@ -118,12 +118,12 @@ namespace libsnark {
         }
 
         void finalize(pb_variable_array<FieldT> &vch, uint64_t size, size_t padlen, pb_variable<FieldT> ZERO) {
-            vch.push_back(ONE);
+            vch.emplace_back(ONE);
             for (size_t i = 0; i < padlen - 1; i++) {
-                vch.push_back(ZERO);
+                vch.emplace_back(ZERO);
             }
             for (size_t i = 0; i < 64; i++) {
-                vch.push_back((size >> (63 - i) & 0x1) ? ONE : ZERO);
+                vch.emplace_back((size >> (63 - i) & 0x1) ? ONE : ZERO);
             }
             assert(vch.size() == 512);
             return;
