@@ -72,7 +72,6 @@ namespace libsnark {
                                                                           FMT(this->annotation_prefix, " round01")));
 
             pb_variable_array<FieldT> chunk3(midans2->bits.begin(), midans2->bits.end());
-            byteReverse(chunk3);
             finalize(chunk3, 256, 192, ZERO);
 
             pb_variable_array<FieldT> ans(unpacked_hash->bits.begin(), unpacked_hash->bits.end());
