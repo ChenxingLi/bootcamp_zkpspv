@@ -92,7 +92,7 @@ namespace libsnark {
                     tmp = FieldT::zero();
                 }
             }
-            assert(result.size() == 0);
+            assert(result.size() == 20);
             return result;
         }
 
