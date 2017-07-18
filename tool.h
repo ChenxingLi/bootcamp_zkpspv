@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include <cstring>
+#include <assert.h>
 
 #ifdef DEBUG
 #   define ASSERT(condition, message) \
@@ -92,7 +93,7 @@ public:
         return std::string(psz, psz + sizeof(data) * 2);
     }
 
-    std::string GetHexStr() const {
+    std::string GetHexInv() const {
         char psz[sizeof(data) * 2 + 1];
         for (unsigned int i = 0; i < sizeof(data); i++)
             sprintf(psz + i * 2, "%02x", data[i]);
@@ -146,7 +147,7 @@ public:
         psz--;
         unsigned char *pstart = (unsigned char *) data;
         unsigned char *pend = pstart + WIDTH;
-        unsigned char *p1=pend - 1;
+        unsigned char *p1 = pend - 1;
         while (psz >= pbegin && p1 >= pstart) {
             *p1 = HexDigit(*psz--);
             if (psz >= pbegin) {
@@ -159,6 +160,10 @@ public:
 
     void SetHex(const std::string &str) {
         SetHex(str.c_str());
+    }
+
+    void SetHexInv(const std::string &str) {
+        SetHexInv(str.c_str());
     }
 
     std::string ToString() const {
@@ -206,16 +211,70 @@ public:
 
     uint256(const base_blob<256> &b) : base_blob<256>(b) {}
 
+    uint256(const std::string &str, bool LE = true) {
+        if (LE) {
+            SetHexInv(str);
+        } else {
+            SetHex(str);
+        }
+    }
+
     explicit uint256(const std::vector<unsigned char> &vch) : base_blob<256>(vch) {}
 };
+
+typedef uint256 BlockHash;
 
 class BlockHeader : public base_blob<640> {
 public:
     BlockHeader() {}
 
+    BlockHeader(const std::string &str, bool LE = true) {
+        if (LE) {
+            SetHexInv(str);
+        } else {
+            SetHex(str);
+        }
+
+    }
+
+    uint256 getHash() {
+        uint256 msg = getFirstHash();
+        CSHA256 sha256;
+        uint256 ans;
+        sha256.Write(msg.begin(), 32);
+        sha256.Finalize(ans.begin());
+        return ans;
+    }
+
+    uint256 getFirstHash() {
+        CSHA256 sha256;
+        uint256 ans;
+        sha256.Write(this->begin(), 80);
+        sha256.Finalize(ans.begin());
+        return ans;
+    }
+
+    uint32_t getTimeStamp() {
+        uint32_t ans;
+        memcpy(&ans, begin() + 68, 4);
+        return ans;
+    }
+
     BlockHeader(const base_blob<640> &b) : base_blob<640>(b) {}
 
     explicit BlockHeader(const std::vector<unsigned char> &vch) : base_blob<640>(vch) {}
+};
+
+class TimeStamp : public std::vector<uint32_t> {
+public:
+    TimeStamp() : std::vector<uint32_t>(11, 0) {}
+
+    TimeStamp(std::vector<uint32_t> &vch) : std::vector<uint32_t>(vch) { assert(vch.size() == 11); }
+
+    void update(uint32_t s) {
+        this->insert(begin(), s);
+        this->erase(end() - 1);
+    }
 };
 
 long long div_ceil(long long x, long long y) {

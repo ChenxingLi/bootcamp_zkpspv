@@ -6,6 +6,7 @@
 #define BOOTCAMP_ZKPSPV_ZKSPV_CP_HPP
 
 #include "zkspv_lm.hpp"
+#include "header-verifier/header_verifier_gadget.hpp"
 
 namespace libsnark {
     template<typename FieldT>
@@ -15,6 +16,8 @@ namespace libsnark {
 
         std::shared_ptr<zkspv_message_packer<FieldT> > msgpack_in;
         std::shared_ptr<zkspv_message_packer<FieldT> > msgpack_out;
+
+        std::shared_ptr<header_verifier_gadget<FieldT> > header_verifier;
 
 
         zkspv_cp_handler(const size_t type,
@@ -49,11 +52,24 @@ namespace libsnark {
                                                                              this->outgoing_message)->packed_message,
                                                                      capacity,
                                                                      "out_message"));
+
+            pb_variable_array<FieldT> head_ver_in(msgpack_in->repacked.begin() + 8, msgpack_in->repacked.end());
+            pb_variable_array<FieldT> head_ver_out(msgpack_out->repacked.begin() + 8, msgpack_out->repacked.end());
+
+            this->header_verifier.reset(new header_verifier_gadget<FieldT>(
+                    this->pb,
+                    head_ver_in,
+                    std::dynamic_pointer_cast<zkspv_pcd_local_data_variable<FieldT> >(
+                            this->local_data)->packed_local_data,
+                    head_ver_out,
+                    " header verifier"
+            ));
         }
 
         void generate_r1cs_constraints() {
             this->msgpack_in->generate_r1cs_constraints();
             this->msgpack_out->generate_r1cs_constraints();
+            this->header_verifier->generate_r1cs_constraints();
         }
 
         void generate_r1cs_witness(const std::shared_ptr<r1cs_pcd_message<FieldT> > &incoming_message,
@@ -64,27 +80,13 @@ namespace libsnark {
             base_handler::generate_r1cs_witness(incoming_messages, local_data);
             this->outgoing_message->generate_r1cs_witness(outcoming_message);
             this->msgpack_in->generate_r1cs_witness();
-//            std::cout << this -> pb.val(this->outgoing_message->all_vars[1]) == FieldT::zero() <<std::endl;
             this->msgpack_out->generate_r1cs_witness();
+            this->header_verifier->generate_r1cs_witness();
         }
 
         std::shared_ptr<r1cs_pcd_message<FieldT> > get_base_case_message() const;
 
         void is_satisfied() {
-            assert(this->pb.val(this->incoming_messages[0]->all_vars[1]) == FieldT::zero());
-            std::cout << "size:" << this->msgpack_out->repacked.size() << std::endl;
-            for (size_t i = 0; i < this->msgpack_out->fully_packed.size(); i++) {
-                this->pb.val(this->msgpack_out->fully_packed[i]).as_bigint().print_hex();
-            }
-
-            for (size_t i = 0; i < this->msgpack_out->unpacked.size(); i++) {
-                std::cout << (this->pb.val(this->msgpack_out->unpacked[i])== FieldT::zero() ? 0 : 1);
-            }
-            std::cout<< std::endl;
-
-            for (size_t i = 0; i < this->msgpack_out->repacked.size(); i++) {
-                this->pb.val(this->msgpack_out->repacked[i]).as_bigint().print_hex();
-            }
             assert(this->pb.is_satisfied());
         }
     };

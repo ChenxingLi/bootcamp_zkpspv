@@ -24,8 +24,8 @@ namespace libsnark {
     public:
         std::vector<uint8_t> unpacked_data;
 
-        uint256 preHash;
         uint256 rt;
+        uint256 preHash;
         std::vector<uint32_t> timestamp;
 
         size_t capacity;
@@ -36,8 +36,8 @@ namespace libsnark {
                 rt(rt),
                 timestamp(t.begin(), t.end()) {
             capacity = FieldT::capacity();
-            unpacked_data.insert(unpacked_data.end(), preHash.begin(), preHash.end());
             unpacked_data.insert(unpacked_data.end(), rt.begin(), rt.end());
+            unpacked_data.insert(unpacked_data.end(), preHash.begin(), preHash.end());
 
             std::vector<uint8_t> bytetimestamp(4 * TIMESTAMPS);
             memcpy(&(bytetimestamp[0]), &(timestamp[0]), 4 * TIMESTAMPS);

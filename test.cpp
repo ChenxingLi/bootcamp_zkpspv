@@ -5,63 +5,66 @@
 #include "sha256.h"
 #include "tool.h"
 #include <iostream>
+#include <string>
+#include <cstring>
 
 #include <common/default_types/r1cs_ppzkpcd_pp.hpp>
 #include <zk_proof_systems/pcd/r1cs_pcd/r1cs_sp_ppzkpcd/r1cs_sp_ppzkpcd.hpp>
 #include "zkspv_cp.hpp"
 
+using std::string;
 
 using namespace libsnark;
 
-void hashcheck(){
+void hashcheck() {
     CSHA256 sha256;
-    base_blob<640> header;
-    uint256 ans;
+    string headerHash = "020000007ef055e1674d2e6551dba41cd214debbee34aeb544c7ec670000000000000000d3998963f80c5bab43fe8c26228e98d030edf4dcbe48a666f5c39e2d7a885c9102c86d536c890019593a470d";
+    BlockHeader header(headerHash);
+    uint256 hash = header.getHash();
 
-    header.SetHexInv("020000007ef055e1674d2e6551dba41cd214debbee34aeb544c7ec670000000000000000d3998963f80c5bab43fe8c26228e98d030edf4dcbe48a666f5c39e2d7a885c9102c86d536c890019593a470d");
-    std::cout << int(*header.begin()) <<std::endl;
-    std::cout << int(*(header.begin()+1)) <<std::endl;
-    sha256.Write(header.begin(),80);
-    sha256.Finalize(ans.begin());
-    sha256.Reset();
+    std::cout << hash.GetHexInv() << std::endl;
 
-    sha256.Write(ans.begin(),32);
-    sha256.Finalize(ans.begin());
-    std::cout << int(*ans.begin()) <<std::endl;
-
-    std::cout<< ans.GetHexStr() <<std::endl;
 }
 
-int main(int argc, char* argv[])
-{
+
+void packcheck() {
     typedef default_r1cs_ppzkpcd_pp PCD_ppT;
 
     start_profiling();
     PCD_ppT::init_public_params();
-
-
     typedef Fr<typename PCD_ppT::curve_A_pp> FieldT;
-
 
     const size_t type = 1;
     const size_t capacity = FieldT::capacity();
 
+    ;
     zkspv_cp_handler<FieldT> zkspv(type, capacity);
     zkspv.generate_r1cs_constraints();
 
-    std::vector<uint32_t> timestamp(11,0xd);
+    TimeStamp timestamp;
+
+    BlockHeader header(
+            "10000020670b600f6deb63be236764dd013fdca071f2be230fb10d010000000000000000d77b83ae14bfe06f14bb01e5aaaa5f29679bc7cdbd93a3de62070cf8810dd6047f1c6d59dc5d011861176a68");
+    BlockHash out_hash("0000000000000000007df6d6851fd8b104b02ed9173cb14202aee5fa66c96443", false);
+    BlockHash in_hash("0000000000000000010db10f23bef271a0dc3f01dd646723be63eb6d0f600b67", false);
 
     std::shared_ptr<r1cs_pcd_message<FieldT> > incoming_message;
-    incoming_message.reset(new zkspv_pcd_message<FieldT>(1,uint256(), uint256(), timestamp));
+    incoming_message.reset(new zkspv_pcd_message<FieldT>(1, in_hash, uint256(), timestamp));
+
+    timestamp.update(header.getTimeStamp());
     std::shared_ptr<r1cs_pcd_message<FieldT> > outcoming_message;
-    outcoming_message.reset(new zkspv_pcd_message<FieldT>(1,uint256(), uint256(), timestamp));
+    outcoming_message.reset(new zkspv_pcd_message<FieldT>(1, out_hash, uint256(), timestamp));
+
     std::shared_ptr<r1cs_pcd_local_data<FieldT> > local_data;
-    local_data.reset(new zkspv_pcd_local_data<FieldT>(BlockHeader()));
+    local_data.reset(new zkspv_pcd_local_data<FieldT>(header));
     zkspv.generate_r1cs_witness(incoming_message, outcoming_message, local_data);
 
     zkspv.is_satisfied();
 
-    std::cout<< "Test Passed!" <<std::endl;
+    std::cout << "Test Passed!" << std::endl;
+}
 
+int main(int argc, char *argv[]) {
+    packcheck();
     return 0;
 }
