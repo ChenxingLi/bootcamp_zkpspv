@@ -36,7 +36,7 @@ namespace libsnark {
             unpacked_data.insert(unpacked_data.end(), rt.begin(), rt.end());
 
             std::vector<uint8_t> bytetimestamp(4 * TIMESTAMPS);
-            memcpy(bytetimestamp.begin(), timestamp.begin(), 4 * TIMESTAMPS);
+            memcpy(bytetimestamp.begin(), &(timestamp[0]), 4 * TIMESTAMPS);
             unpacked_data.insert(unpacked_data.end(), bytetimestamp.begin(), bytetimestamp.end());
             ASSERT(unpacked_data.size() == MSG_LEN / 8, "Invaild input length");
         }
