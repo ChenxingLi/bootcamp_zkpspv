@@ -63,7 +63,7 @@ namespace libsnark {
             base_handler::generate_r1cs_witness(incoming_messages, local_data);
             this->outgoing_message->generate_r1cs_witness(outcoming_message);
             this->msgpack_in->generate_r1cs_witness();
-            this->msgpack_out->generate_r1cs_constraints();
+            this->msgpack_out->generate_r1cs_witness();
         }
 
         std::shared_ptr<r1cs_pcd_message<FieldT> > get_base_case_message() const;
