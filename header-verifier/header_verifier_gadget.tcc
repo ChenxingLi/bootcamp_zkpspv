@@ -23,10 +23,10 @@ namespace libsnark {
         pb_variable_array<FieldT> timestamp(msg_input.begin() + 8, msg_input.end());
         median11.reset(new median11_gadget<FieldT>(pb, timestamp, timestamp_median, annotation_prefix + " median11"));
         timecmp.reset(
-                new unixtime_gadget<FieldT>(pb, timestamp_median, local_input[9], annotation_prefix + " timecmp"));
+                new unixtime_gadget<FieldT>(pb, timestamp_median, local_input[17], annotation_prefix + " timecmp"));
         this_hash.allocate(pb, 8);
         //SHA256x2.reset(new SHA256x2_gadget<FieldT>(pb, local_input, this_hash, annotation_prefix + " SHA256x2"));
-        diffcmp.reset(new difficulty_comparison_gadget<FieldT>(pb, this_hash, local_input[10]));
+        diffcmp.reset(new difficulty_comparison_gadget<FieldT>(pb, this_hash, local_input[18]));
     }
 
     template<typename FieldT>
