@@ -71,7 +71,9 @@ namespace libsnark {
 
         void is_satisfied() {
             assert(this->pb.val(this->incoming_messages[0]->all_vars[1]) == FieldT::zero());
-            this->pb.val(this->msgpack_out->repacked[16]).as_bigint().print();
+            for(size_t i =0; i<this->msgpack_out->repacked.size(); i++){
+                this->pb.val(this->msgpack_out->repacked[i]).as_bigint().print();
+            }
             assert(this->pb.is_satisfied());
         }
     };
