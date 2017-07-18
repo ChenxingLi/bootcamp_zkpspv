@@ -46,12 +46,15 @@ void packcheck() {
 
     TimeStamp timestamp;
 
-    BlockHeader header(
-            "10000020670b600f6deb63be236764dd013fdca071f2be230fb10d010000000000000000d77b83ae14bfe06f14bb01e5aaaa5f29679bc7cdbd93a3de62070cf8810dd6047f1c6d59dc5d011861176a68");
+//    BlockHeader header(
+//            "10000020670b600f6deb63be236764dd013fdca071f2be230fb10d010000000000000000d77b83ae14bfe06f14bb01e5aaaa5f29679bc7cdbd93a3de62070cf8810dd6047f1c6d59dc5d011861176a68");
+    BlockHeader header;
     BlockHash out_hash("0000000000000000007df6d6851fd8b104b02ed9173cb14202aee5fa66c96443", false);
     BlockHash in_hash("0000000000000000010db10f23bef271a0dc3f01dd646723be63eb6d0f600b67", false);
-    BlockHash test(
-            "10000020670b600f6deb63be236764dd013fdca071f2be230fb10d010000000000000000d77b83ae14bfe06f14bb01e5aaaa5f29679bc7cdbd93a3de62070cf8");
+//    BlockHash test(
+//            "10000020670b600f6deb63be236764dd013fdca071f2be230fb10d010000000000000000d77b83ae14bfe06f14bb01e5aaaa5f29679bc7cdbd93a3de62070cf8");
+
+    BlockHash test;
 
     CSHA256 sha2;
     uint256 ans;
