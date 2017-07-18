@@ -34,7 +34,7 @@ namespace libsnark {
         pb_variable_array<FieldT> packed_hash;
 
 
-        sha256_2_function_check_gadget<FieldT>::sha256_2_function_check_gadget(protoboard<FieldT> &pb,
+        sha256_2_function_check_gadget(protoboard<FieldT> &pb,
                                                                                const pb_variable_array<FieldT> &packed_head,
                                                                                const pb_variable_array<FieldT> &packed_hash,
                                                                                const std::string &annotation_prefix) :
