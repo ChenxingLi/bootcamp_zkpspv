@@ -117,7 +117,7 @@ namespace libsnark {
             return;
         }
 
-        void finalize(pb_variable_array<FieldT> &vch, uint64_t size, size_t padlen, pb_variable<FieldT> &ZERO) {
+        void finalize(pb_variable_array<FieldT> &vch, uint64_t size, size_t padlen, pb_variable<FieldT> ZERO) {
             vch.push_back(ONE);
             for (size_t i = 0; i < padlen - 1; i++) {
                 vch.push_back(ZERO);
