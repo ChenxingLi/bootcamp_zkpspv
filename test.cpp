@@ -63,8 +63,8 @@ void packcheck() {
     sha2.Write(test2.begin(), 32);
     sha2.FinalizeNoPadding(ans.begin());
     std::cout << ans.GetHexInv() << std::endl;
-    std::cout<< header.getFirstHash() << std::endl;
-    std::cout<< header.getHash() << std::endl;
+    std::cout<< header.getFirstHash().GetHexInv() << std::endl;
+    std::cout<< header.getHash().GetHexInv() << std::endl;
 
 
     std::shared_ptr<r1cs_pcd_message<FieldT> > incoming_message;
