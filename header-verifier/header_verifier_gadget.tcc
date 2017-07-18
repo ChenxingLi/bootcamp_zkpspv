@@ -72,7 +72,7 @@ namespace libsnark {
             this->pb.val(msg_output[i]) = this->pb.val(this_hash[i]);
         }
         for (int i = 0; i < 11; ++i) {
-            this->pb.val(msg_output[8 + i]) = i ? this->pb.val(timestamp[i + 7]) : this->pb.val(local_input[17]);
+            this->pb.val(msg_output[8 + i]) = i ? this->pb.val(msg_output[i + 7]) : this->pb.val(local_input[17]);
         }
     }
 
