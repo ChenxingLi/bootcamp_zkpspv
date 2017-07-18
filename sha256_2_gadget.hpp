@@ -47,10 +47,10 @@ namespace libsnark {
             ZERO.allocate(pb, "zero");
 
 
-            unpacked_head.reset(new digest_variable(pb, 20 * 32, FMT(annotation_prefix, " unpacked head v")));
-            unpacked_hash.reset(new digest_variable(pb, 8 * 32, FMT(annotation_prefix, " unpacked hash v")));
-            midans1.reset(new digest_variable(pb, 256, FMT(annotation_prefix, " midans1")));
-            midans2.reset(new digest_variable(pb, 256, FMT(annotation_prefix, " midans2")));
+            unpacked_head.reset(new digest_variable<FieldT>(pb, 20 * 32, FMT(annotation_prefix, " unpacked head v")));
+            unpacked_hash.reset(new digest_variable<FieldT>(pb, 8 * 32, FMT(annotation_prefix, " unpacked hash v")));
+            midans1.reset(new digest_variable<FieldT>(pb, 256, FMT(annotation_prefix, " midans1")));
+            midans2.reset(new digest_variable<FieldT>(pb, 256, FMT(annotation_prefix, " midans2")));
 
             head_packer.reset(new multipacking_gadget<FieldT>(pb, unpacked_head->bits, packed_head, 32,
                                                               FMT(annotation_prefix, " head packer")));
