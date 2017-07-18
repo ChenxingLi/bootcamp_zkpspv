@@ -83,7 +83,7 @@ namespace libsnark {
             FieldT tmp = FieldT::zero();
             for (const uint8_t *p = header.begin(); p != header.end(); p++) {
                 for (size_t i = 0; i < 8; i++) {
-                    tmp += tmp + ((*it) >> i & 0x1 ? FieldT::one() : FieldT::zero());
+                    tmp += tmp + ((*p) >> i & 0x1 ? FieldT::one() : FieldT::zero());
                 }
                 count++;
                 if (count == 4) {
