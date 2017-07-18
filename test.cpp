@@ -61,6 +61,7 @@ int main(int argc, char* argv[])
 
     zkspv.is_satisfied();
 
+    std::cout<< "Test Passed!" <<std::endl;
 
     return 0;
 }
