@@ -51,18 +51,7 @@ void packcheck() {
     BlockHeader header("10000020670b600f6deb63be236764dd013fdca071f2be230fb10d010000000000000000d77b83ae14bfe06f14bb01e5aaaa5f29679bc7cdbd93a3de62070cf8810dd6047f1c6d59dc5d011861176a68");
     BlockHash out_hash("0000000000000000007df6d6851fd8b104b02ed9173cb14202aee5fa66c96443", false);
     BlockHash in_hash("0000000000000000010db10f23bef271a0dc3f01dd646723be63eb6d0f600b67", false);
-//    BlockHash test(
-//            "18241824182418241824182418241824182418241824182418241824182418241824182418241824182418241824182418241824182418241824182418241824");
 
-    BlockHash test1("10000020670b600f6deb63be236764dd013fdca071f2be230fb10d0100000000");
-    BlockHash test2("00000000d77b83ae14bfe06f14bb01e5aaaa5f29679bc7cdbd93a3de62070cf8");
-
-    CSHA256 sha2;
-    uint256 ans;
-    sha2.Write(test1.begin(), 32);
-    sha2.Write(test2.begin(), 32);
-    sha2.FinalizeNoPadding(ans.begin());
-    std::cout << ans.GetHexInv() << std::endl;
     std::cout<< header.getFirstHash().GetHexInv() << std::endl;
     std::cout<< header.getHash().GetHexInv() << std::endl;
 
