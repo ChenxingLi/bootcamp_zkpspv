@@ -51,7 +51,8 @@ int main(int argc, char* argv[])
 
 
     std::vector<uint32_t> timestamp(11,0x50506060);
-    std::shared_ptr<r1cs_pcd_message<FieldT> > incoming_message = new zkspv_pcd_message<FieldT>(1,uint256(), uint256(), timestamp);
+    std::shared_ptr<r1cs_pcd_message<FieldT> > incoming_message;
+    incoming_message.reset(new zkspv_pcd_message<FieldT>(1,uint256(), uint256(), timestamp));
     std::shared_ptr<r1cs_pcd_message<FieldT> > outcoming_message = new zkspv_pcd_message<FieldT>(1,uint256(), uint256(), timestamp);
     std::shared_ptr<r1cs_pcd_local_data<FieldT> > local_data = new zkspv_pcd_local_data<FieldT>(BlockHeader());
     zkspv.generate_r1cs_witness(incoming_message, outcoming_message, local_data);
