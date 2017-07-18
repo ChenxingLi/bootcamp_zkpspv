@@ -6,9 +6,9 @@
 
 #include "gadgetlib1/gadget.hpp"
 #include "gadgetlib1/gadgets/basic_gadgets.hpp"
-#include "header_verifier/median11/median11_gadget.hpp"
-#include "header_verifier/unixtime/unixtime_gadget.hpp"
-#include "header_verifier/difficulty/difficulty_gadget.hpp"
+#include "median11/median11_gadget.hpp"
+#include "unixtime/unixtime_gadget.hpp"
+#include "difficulty/difficulty_gadget.hpp"
 //#include "gadgetlib1/gadgets/header_verifier/SHA256/SHA256x2_gadget.hpp"
 
 namespace libsnark {
