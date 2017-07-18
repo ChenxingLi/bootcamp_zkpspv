@@ -69,7 +69,7 @@ namespace libsnark {
         std::shared_ptr<r1cs_pcd_message<FieldT> > get_base_case_message() const;
 
         void is_satisfied() {
-            assert(pb.is_satisfied());
+            assert(this->pb.is_satisfied());
         }
     };
 }
