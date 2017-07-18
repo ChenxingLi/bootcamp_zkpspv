@@ -82,7 +82,7 @@ namespace libsnark {
         }
 
         void generate_r1cs_constraints() {
-            (this->pb).add_r1cs_constraint(r1cs_constraint(1, ZERO, 0), "Force zero");
+            (this->pb).add_r1cs_constraint(r1cs_constraint<FieldT>(1, ZERO, 0), "Force zero");
             unpacked_head->generate_r1cs_constraints();
             unpacked_hash->generate_r1cs_constraints();
             midans1->generate_r1cs_constraints();
