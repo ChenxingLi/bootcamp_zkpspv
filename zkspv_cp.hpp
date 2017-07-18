@@ -17,8 +17,7 @@ namespace libsnark {
         std::shared_ptr<zkspv_message_packer<FieldT> > msgpack_out;
 
 
-        zkspv_cp_handler<FieldT>::zkspv_cp_handler(
-                                    const size_t type,
+        zkspv_cp_handler(const size_t type,
                                                    const size_t capacity,
                                                    const size_t max_arity = 1,
                                                    const bool relies_on_same_type_inputs = false,
@@ -69,7 +68,7 @@ namespace libsnark {
 
         std::shared_ptr<r1cs_pcd_message<FieldT> > get_base_case_message() const;
 
-        void is_satisfied(){
+        void is_satisfied() {
             assert(pb.is_satisfied());
         }
     };
