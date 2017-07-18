@@ -67,7 +67,7 @@ namespace libsnark {
             return;
         }
 
-        ~tally_pcd_message() = default;
+        ~zkspv_pcd_message() = default;
     };
 
     template<typename FieldT>
@@ -121,7 +121,7 @@ namespace libsnark {
             return nullptr;
         }
 
-        ~tally_pcd_message_variable() = default;
+        ~zkspv_pcd_message_variable() = default;
     };
 
     template<typename FieldT>
@@ -142,7 +142,7 @@ namespace libsnark {
             return nullptr;
         }
 
-        ~tally_pcd_local_data_variable() = default;
+        ~zkspv_pcd_local_data_variable() = default;
     };
 
     template<typename FieldT>
