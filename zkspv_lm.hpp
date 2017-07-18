@@ -155,7 +155,7 @@ namespace libsnark {
         pb_variable_array<FieldT> repacked;
         size_t capacity;
 
-    protected:
+
         pb_variable_array<FieldT> fully_packed;
         pb_variable_array<FieldT> unpacked;
 
