@@ -34,6 +34,6 @@ public:
 };
 
 } // libsnark
-#include "header_verifier/unixtime/unixtime_gadget.tcc"
+#include "unixtime_gadget.tcc"
 
 #endif // DIFFICULTY_COMPARISON_GADGETS_HPP_

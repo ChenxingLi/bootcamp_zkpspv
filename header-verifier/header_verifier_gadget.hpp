@@ -39,6 +39,6 @@ public:
 };
 
 } // libsnark
-#include "header_verifier/header_verifier_gadget.tcc"
+#include "header_verifier_gadget.tcc"
 
 #endif // HEADER_VERIFIER_GADGETS_HPP_
