@@ -32,8 +32,8 @@ namespace libsnark {
 
         zkspv_pcd_message(const size_t type, uint256 preHash, uint256 rt, std::vector<uint32_t> &t) :
                 r1cs_pcd_message<FieldT>(type),
-                preHash(preHash),
                 rt(rt),
+                preHash(preHash),
                 timestamp(t.begin(), t.end()) {
             capacity = FieldT::capacity();
             unpacked_data.insert(unpacked_data.end(), rt.begin(), rt.end());
