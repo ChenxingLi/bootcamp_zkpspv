@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
     zkspv_cp_handler<FieldT> zkspv(type, capacity);
     zkspv.generate_r1cs_constraints();
 
-    std::vector<uint32_t> timestamp(11,0xffffffff);
+    std::vector<uint32_t> timestamp(11,0xd);
 
     std::shared_ptr<r1cs_pcd_message<FieldT> > incoming_message;
     incoming_message.reset(new zkspv_pcd_message<FieldT>(1,uint256(), uint256(), timestamp));
