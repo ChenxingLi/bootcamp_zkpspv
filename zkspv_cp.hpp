@@ -73,7 +73,7 @@ namespace libsnark {
         void is_satisfied() {
             assert(this->pb.val(this->incoming_messages[0]->all_vars[1]) == FieldT::zero());
             std::cout << "size:" << this->msgpack_out->repacked.size() << std::endl;
-            for (size_t i = 0; i < this->msgpack_out->repacked.size(); i++) {
+            for (size_t i = 0; i < this->msgpack_out->fully_packed.size(); i++) {
                 this->pb.val(this->msgpack_out->fully_packed[i]).as_bigint().print_hex();
             }
             for (size_t i = 0; i < this->msgpack_out->repacked.size(); i++) {
