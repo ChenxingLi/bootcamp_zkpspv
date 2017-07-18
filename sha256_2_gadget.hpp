@@ -35,9 +35,9 @@ namespace libsnark {
 
 
         sha256_2_function_check_gadget(protoboard<FieldT> &pb,
-                                                                               const pb_variable_array<FieldT> &packed_head,
-                                                                               const pb_variable_array<FieldT> &packed_hash,
-                                                                               const std::string &annotation_prefix) :
+                                       const pb_variable_array<FieldT> &packed_head,
+                                       const pb_variable_array<FieldT> &packed_hash,
+                                       const std::string &annotation_prefix) :
                 gadget<FieldT>(pb, annotation_prefix),
                 packed_head(packed_head),
                 packed_hash(packed_hash) {
@@ -62,6 +62,8 @@ namespace libsnark {
             gadget00.reset(
                     new sha256_compression_function_gadget<FieldT>(pb, SHA256_default_IV<FieldT>(pb), chunk1, *midans1,
                                                                    FMT(this->annotation_prefix, " round00")));
+
+            std::cout << unpacked_head->bits.size() << std::endl;
 
             pb_variable_array<FieldT> chunk2(unpacked_head->bits.begin() + 512, unpacked_head->bits.end());
             byteReverse(chunk2);
@@ -97,13 +99,13 @@ namespace libsnark {
 
         void generate_r1cs_witness() {
             (this->pb).val(ZERO) = FieldT::zero();
-            head_packer -> generate_r1cs_witness_from_packed();
+            head_packer->generate_r1cs_witness_from_packed();
 
-            gadget00 -> generate_r1cs_witness();
-            gadget01 -> generate_r1cs_witness();
-            gadget1 -> generate_r1cs_witness();
+            gadget00->generate_r1cs_witness();
+            gadget01->generate_r1cs_witness();
+            gadget1->generate_r1cs_witness();
 
-            hash_packer -> generate_r1cs_witness_from_bits();
+            hash_packer->generate_r1cs_witness_from_bits();
         }
 
         void byteReverse(pb_variable_array<FieldT> &vch) {
