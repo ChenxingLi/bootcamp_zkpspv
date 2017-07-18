@@ -82,9 +82,9 @@ namespace libsnark {
         void generate_r1cs_witness(const std::shared_ptr<r1cs_pcd_message<FieldT> > &incoming_message,
                                    const std::shared_ptr<r1cs_pcd_message<FieldT> > &outcoming_message,
                                    const std::shared_ptr<r1cs_pcd_local_data<FieldT> > &local_data) {
+            std::vector<std::shared_ptr<r1cs_pcd_message<FieldT> > > incoming_messages(1, incoming_message);
             base_handler::generate_r1cs_witness(incoming_messages, local_data);
 
-            std::vector<std::shared_ptr<r1cs_pcd_message<FieldT> > > incoming_messages(1, incoming_message);
             this->outgoing_message->generate_r1cs_witness(outcoming_message);
             this->msgpack_in->generate_r1cs_witness();
             this->msgpack_out->generate_r1cs_witness();
