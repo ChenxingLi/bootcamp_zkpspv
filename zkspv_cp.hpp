@@ -18,8 +18,7 @@ namespace libsnark {
         std::shared_ptr<zkspv_message_packer<FieldT> > msgpack_in;
         std::shared_ptr<zkspv_message_packer<FieldT> > msgpack_out;
 
-//        std::shared_ptr<header_verifier_gadget<FieldT> > header_verifier;
-        std::shared_ptr<sha256_2_function_check_gadget<FieldT> > sha256_2;
+        std::shared_ptr<header_verifier_gadget<FieldT> > header_verifier;
 
 
         zkspv_cp_handler(const size_t type,
