@@ -9,6 +9,7 @@
 #include "zk_proof_systems/pcd/r1cs_pcd/compliance_predicate/compliance_predicate.hpp"
 #include "zk_proof_systems/pcd/r1cs_pcd/compliance_predicate/cp_handler.hpp"
 #include "tool.h"
+#include <iostream>
 #include <vector>
 
 #ifdef CODE_READ

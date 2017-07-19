@@ -77,7 +77,6 @@ namespace libsnark {
             this->msgpack_in->generate_r1cs_constraints();
             this->msgpack_out->generate_r1cs_constraints();
             this->header_verifier->generate_r1cs_constraints();
-            std::err<<pb.num_constraints()<<std::endl;
         }
 
         void generate_r1cs_witness(const std::shared_ptr<r1cs_pcd_message<FieldT> > &incoming_message,
