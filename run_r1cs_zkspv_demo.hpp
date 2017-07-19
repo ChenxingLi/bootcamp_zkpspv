@@ -33,7 +33,7 @@ bool run_r1cs_zkspv_demo(vector<string> &sheader) {
     vec_msg[0].reset(new zkspv_pcd_message<FieldT>(0, BlockHeader(sheader[0]).getPrevHash(), uint256(), timeStamp));
 
     for (size_t i = 1; i <= node_size; i++) {
-        BlockHeader header = BlockHeader(sheader[i]);
+        BlockHeader header = BlockHeader(sheader[i-1]);
         timeStamp.update(header.getTimeStamp());
         vec_ld[i].reset(new zkspv_pcd_local_data<FieldT>(header));
         vec_msg[i].reset(new zkspv_pcd_message<FieldT>(1, header.getHash(), uint256(), timeStamp));
