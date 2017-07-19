@@ -11,7 +11,7 @@
 #include <common/default_types/r1cs_ppzkpcd_pp.hpp>
 #include <zk_proof_systems/pcd/r1cs_pcd/r1cs_sp_ppzkpcd/r1cs_sp_ppzkpcd.hpp>
 #include "zkspv_cp.hpp"
-//#include "run_r1cs_zkspv_demo.hpp"
+#include "run_r1cs_zkspv_demo.hpp"
 
 using std::string;
 
@@ -75,7 +75,7 @@ void packcheck() {
     std::cout << "Test Passed!" << std::endl;
 }
 
-/*void testdemo(){
+void testdemo(){
     typedef default_r1cs_ppzkpcd_pp PCD_ppT;
 
     start_profiling();
@@ -90,7 +90,7 @@ void packcheck() {
 
     const bool bit = run_r1cs_zkspv_demo<PCD_ppT>(sheaders);
     assert(bit);
-}*/
+}
 
 int main(int argc, char *argv[]) {
     packcheck();
