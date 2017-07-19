@@ -16,7 +16,7 @@ INSTALL_PATH = /usr/local
 # Initialize this using "CXXFLAGS=... make". The makefile appends to that.
 CXXFLAGS += -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-comment -Wfatal-errors $(OPTFLAGS) $(FEATUREFLAGS) -DCURVE_$(CURVE)
 
-CXXFLAGS += -I$(INSTALL_PATH)/include -I$(INSTALL_PATH)/include/libsnark
+CXXFLAGS += -I$(INSTALL_PATH)/include -I$(INSTALL_PATH)/include/libsnark -I~/bootcamp_zkpspv
 
 CXXFLAGS += -fopenmp -DMULTICORE
 LDFLAGS += -L$(INSTALL_PATH)/lib
