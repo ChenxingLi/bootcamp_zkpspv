@@ -60,7 +60,7 @@ bool run_r1cs_zkspv_demo(vector<string> &sheader) {
 
         zkspv.generate_r1cs_witness(vec_msg[i - 1], vec_msg[i], vec_ld[i]);
 
-        const r1cs_pcd_compliance_predicate_primary_input<FieldT> tally_primary_input(vec_msg[i]);
+        const r1cs_pcd_compliance_predicate_primary_input<FieldT> tally_primary_input(vec_msg[i-1]);
         const r1cs_pcd_compliance_predicate_auxiliary_input<FieldT> tally_auxiliary_input(
                 vector<std::shared_ptr<r1cs_pcd_message<FieldT >>>(1, vec_msg[i]),
                 vec_ld[i],
