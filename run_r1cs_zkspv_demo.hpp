@@ -56,7 +56,7 @@ bool run_r1cs_zkspv_demo(vector<string> &sheader) {
     r1cs_sp_ppzkpcd_processed_verification_key<PCD_ppT> pvk = r1cs_sp_ppzkpcd_process_vk<PCD_ppT>(keypair.vk);
 
 
-    for (size_t cur_idx = 1; cur_idx <= node_size; cur_idx++) {
+    for (size_t i = 1; i <= node_size; i++) {
 
 
         zkspv.generate_r1cs_witness(vec_msg[i - 1], vec_msg[i], vec_ld[i]);
@@ -88,7 +88,7 @@ bool run_r1cs_zkspv_demo(vector<string> &sheader) {
 
         all_accept = all_accept && ans;
 
-        printf("Current node = %zu. Current proof verifies = %s\n", cur_idx, ans ? "YES" : "NO");
+        printf("Current node = %zu. Current proof verifies = %s\n", i, ans ? "YES" : "NO");
         printf("\n\n\n ================================================================================\n\n\n");
     }
 
