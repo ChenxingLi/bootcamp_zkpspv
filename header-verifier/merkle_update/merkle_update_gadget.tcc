@@ -60,7 +60,7 @@ namespace libsnark {
 
 	linear_combination<FieldT> tsucc;
 	succ.assign(pb, tsucc);
-	checker.reset(new merkle_tree_check_update_gadget<FieldT, HashT>(pb, 32, a2, *v1, *r1, *p1, *v2, *r2, *p2, succ, FMT(annotation_prefix + " checker")));
+	checker.reset(new merkle_tree_check_update_gadget<FieldT, HashT>(pb, 32, a2, *v1, *r1, *p1, *v2, *r2, *p2, succ, FMT(annotation_prefix, " checker")));
 }
 
 template<typename FieldT, typename HashT>
