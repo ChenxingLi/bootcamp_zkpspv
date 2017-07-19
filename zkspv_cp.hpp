@@ -7,6 +7,7 @@
 
 #include "zkspv_lm.hpp"
 #include "header-verifier/header_verifier_gadget.hpp"
+#include <iostream>
 
 namespace libsnark {
     template<typename FieldT>
