@@ -16,7 +16,7 @@ using namespace libsnark;
 #endif
 
 #define TIMESTAMPS 11
-#define MSG_LEN (256+256+11*32)
+#define MSG_LEN (256+256+11*32 + 32)
 
 namespace libsnark {
     template<typename FieldT>
@@ -24,9 +24,10 @@ namespace libsnark {
     public:
         std::vector<uint8_t> unpacked_data;
 
-        uint256 rt;
         uint256 preHash;
         std::vector<uint32_t> timestamp;
+        uint256 rt;
+        uint32_t empty;
 
         size_t capacity;
 
@@ -34,14 +35,24 @@ namespace libsnark {
                 r1cs_pcd_message<FieldT>(type),
                 rt(rt),
                 preHash(preHash),
-                timestamp(t.begin(), t.end()) {
+                timestamp(t.begin(), t.end()),
+                empty(0)
+        {
             capacity = FieldT::capacity();
-            unpacked_data.insert(unpacked_data.end(), rt.begin(), rt.end());
+
             unpacked_data.insert(unpacked_data.end(), preHash.begin(), preHash.end());
 
             std::vector<uint8_t> bytetimestamp(4 * TIMESTAMPS);
             memcpy(&(bytetimestamp[0]), &(timestamp[0]), 4 * TIMESTAMPS);
             unpacked_data.insert(unpacked_data.end(), bytetimestamp.begin(), bytetimestamp.end());
+
+            unpacked_data.insert(unpacked_data.end(), rt.begin(), rt.end());
+
+            std::vector<uint8_t> byteempty(4);
+            memcpy(&(byteempty[0]), &empty, 4);
+
+            unpacked_data.insert(unpacked_data.end(), byteempty.begin(), byteempty.end());
+
             ASSERT(unpacked_data.size() == MSG_LEN / 8, "Invaild input length");
         }
 

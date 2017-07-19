@@ -7,6 +7,7 @@
 
 #include "zkspv_lm.hpp"
 #include "sha256_2_gadget.hpp"
+#include "gadgetlib1/gadgets/header-verifier/header_verifier_gadget.hpp"
 
 namespace libsnark {
     template<typename FieldT>
@@ -54,30 +55,30 @@ namespace libsnark {
                                                                      capacity,
                                                                      "out_message"));
 
-            pb_variable_array<FieldT> head_ver_in(msgpack_in->repacked.begin() + 8, msgpack_in->repacked.begin() + 16);
-            pb_variable_array<FieldT> head_ver_out(msgpack_out->repacked.begin() + 8,
-                                                   msgpack_out->repacked.begin() + 16);
-//
-//            this->header_verifier.reset(new header_verifier_gadget<FieldT>(
-//                    this->pb,
-//                    head_ver_in,
-//                    std::dynamic_pointer_cast<zkspv_pcd_local_data_variable<FieldT> >(
-//                            this->local_data)->packed_local_data,
-//                    head_ver_out,
-//                    " header verifier"
-//            ));
+//            pb_variable_array<FieldT> head_ver_in(msgpack_in->repacked.begin() + 8, msgpack_in->repacked.begin() + 16);
+//            pb_variable_array<FieldT> head_ver_out(msgpack_out->repacked.begin() + 8,
+//                                                   msgpack_out->repacked.begin() + 16);
 
-            sha256_2.reset(new sha256_2_function_check_gadget<FieldT>(this->pb,
-                                                                      std::dynamic_pointer_cast<zkspv_pcd_local_data_variable<FieldT> >(
-                                                                              this->local_data)->packed_local_data,
-                                                                      head_ver_out, " sha2 gadget"));
+            this->header_verifier.reset(new header_verifier_gadget<FieldT>(
+                    this->pb,
+                    msgpack_in->repacked,
+                    std::dynamic_pointer_cast<zkspv_pcd_local_data_variable<FieldT> >(
+                            this->local_data)->packed_local_data,
+                    msgpack_out->repacked,
+                    " header verifier"
+            ));
+
+//            sha256_2.reset(new sha256_2_function_check_gadget<FieldT>(this->pb,
+//                                                                      std::dynamic_pointer_cast<zkspv_pcd_local_data_variable<FieldT> >(
+//                                                                              this->local_data)->packed_local_data,
+//                                                                      head_ver_out, " sha2 gadget"));
         }
 
         void generate_r1cs_constraints() {
             this->msgpack_in->generate_r1cs_constraints();
             this->msgpack_out->generate_r1cs_constraints();
             this->sha256_2->generate_r1cs_constraints();
-//            this->header_verifier->generate_r1cs_constraints();
+            this->header_verifier->generate_r1cs_constraints();
         }
 
         void generate_r1cs_witness(const std::shared_ptr<r1cs_pcd_message<FieldT> > &incoming_message,
@@ -90,7 +91,7 @@ namespace libsnark {
             this->msgpack_in->generate_r1cs_witness();
             this->msgpack_out->generate_r1cs_witness();
             this->sha256_2->generate_r1cs_witness();
-//            this->header_verifier->generate_r1cs_witness();
+            this->header_verifier->generate_r1cs_witness();
         }
 
         std::shared_ptr<r1cs_pcd_message<FieldT> > get_base_case_message() const {
