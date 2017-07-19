@@ -260,6 +260,12 @@ public:
         return ans;
     }
 
+    uint256 getPrevHash() {
+        uint256 ans;
+        memcpy(ans.begin(), begin() + 4, 32);
+        return ans;
+    }
+
     BlockHeader(const base_blob<640> &b) : base_blob<640>(b) {}
 
     explicit BlockHeader(const std::vector<unsigned char> &vch) : base_blob<640>(vch) {}

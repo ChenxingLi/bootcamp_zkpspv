@@ -108,12 +108,12 @@ namespace libsnark {
         }
 
         void byteReverse(pb_variable_array<FieldT> &vch) {
-            assert(vch.size() % 8 == 0);
+            assert(vch.size() % 32 == 0);
             typename pb_variable_array<FieldT>::iterator it;
             it = vch.begin();
             while (it != vch.end()) {
-                std::reverse(it, it + 8);
-                it += 8;
+                std::reverse(it, it + 32);
+                it += 32;
             }
             return;
         }

@@ -89,18 +89,17 @@ namespace libsnark {
             r1cs_variable_assignment<FieldT> result;
             FieldT base = FieldT::one();
             FieldT sum = FieldT::zero();
-            for (const uint8_t *p = header.begin(); p != header.end(); p++) {
-                for (size_t i = 0; i < 8; i++) {
-                    sum += ((*p) >> i & 0x1 ? base : FieldT::zero());
-                    base += base;
+            for (const uint8_t *p = header.begin(); p != header.end(); p += 4) {
+                for (size_t j = 0; j < 4; j++) {
+                    for (size_t i = 0; i < 8; i++) {
+                        bool bit = (*(p + 3 - j) >> i) & 0x1;
+                        sum += bit ? base : FieldT::zero();
+                        base += base;
+                    }
                 }
-                count++;
-                if (count == 4) {
-                    count = 0;
-                    result.push_back(sum);
-                    sum = FieldT::zero();
-                    base = FieldT::one();
-                }
+                result.push_back(sum);
+                sum = FieldT::zero();
+                base = FieldT::one();
             }
             assert(result.size() == 20);
             return result;
@@ -178,6 +177,9 @@ namespace libsnark {
             repacked.allocate(pb, MSG_LEN / 32, " repacked message");
             unpacker.reset(new multipacking_gadget<FieldT>(pb, unpacked, fully_packed, capacity,
                                                            FMT(this->annotation_prefix, " message fully packer")));
+            byteReverse(unpacked, 32);
+            byteReverse(unpacked, 8);
+
             repacker.reset(new multipacking_gadget<FieldT>(pb, unpacked, repacked, 32,
                                                            FMT(this->annotation_prefix, " message re-packer")));
         }
@@ -190,6 +192,17 @@ namespace libsnark {
         void generate_r1cs_witness() {
             unpacker->generate_r1cs_witness_from_packed();
             repacker->generate_r1cs_witness_from_bits();
+        }
+
+        void byteReverse(pb_variable_array<FieldT> &vch, size_t cell) {
+            assert(vch.size() % cell == 0);
+            typename pb_variable_array<FieldT>::iterator it;
+            it = vch.begin();
+            while (it != vch.end()) {
+                std::reverse(it, it + cell);
+                it += cell;
+            }
+            return;
         }
     };
 }

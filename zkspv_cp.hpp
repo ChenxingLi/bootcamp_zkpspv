@@ -93,7 +93,12 @@ namespace libsnark {
 //            this->header_verifier->generate_r1cs_witness();
         }
 
-        std::shared_ptr<r1cs_pcd_message<FieldT> > get_base_case_message() const;
+        std::shared_ptr<r1cs_pcd_message<FieldT> > get_base_case_message() const {
+            std::shared_ptr<r1cs_pcd_message<FieldT> > ptr;
+            TimeStamp timeStamp;
+            ptr.reset(new zkspv_pcd_message<FieldT>(0, 0, timeStamp));
+            return ptr;
+        }
 
         void is_satisfied() {
             assert(this->pb.is_satisfied());
