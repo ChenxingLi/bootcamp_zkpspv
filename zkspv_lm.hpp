@@ -185,7 +185,7 @@ namespace libsnark {
         }
 
         void generate_r1cs_constraints() {
-            //unpacker->generate_r1cs_constraints(true);
+            unpacker->generate_r1cs_constraints(true);
             repacker->generate_r1cs_constraints(false);
         }
 
