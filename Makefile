@@ -9,7 +9,7 @@
 # To override these, use "make OPTFLAGS=..." etc.
 CURVE = BN128
 OPTFLAGS = -O2 -march=native -mtune=native -g
-FEATUREFLAGS = -DUSE_ASM -DMONTGOMERY_OUTPUT -DDEBUG
+FEATUREFLAGS = -DUSE_ASM -DMONTGOMERY_OUTPUT
 CXX = g++
 
 INSTALL_PATH = /usr/local

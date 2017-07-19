@@ -6,7 +6,6 @@
 #define BOOTCAMP_ZKPSPV_ZKSPV_CP_HPP
 
 #include "zkspv_lm.hpp"
-#include "sha256_2_gadget.hpp"
 #include "header-verifier/header_verifier_gadget.hpp"
 
 namespace libsnark {
@@ -76,7 +75,6 @@ namespace libsnark {
         void generate_r1cs_constraints() {
             this->msgpack_in->generate_r1cs_constraints();
             this->msgpack_out->generate_r1cs_constraints();
-            this->sha256_2->generate_r1cs_constraints();
             this->header_verifier->generate_r1cs_constraints();
         }
 
@@ -89,7 +87,6 @@ namespace libsnark {
             this->outgoing_message->generate_r1cs_witness(outcoming_message);
             this->msgpack_in->generate_r1cs_witness();
             this->msgpack_out->generate_r1cs_witness();
-            this->sha256_2->generate_r1cs_witness();
             this->header_verifier->generate_r1cs_witness();
         }
 
