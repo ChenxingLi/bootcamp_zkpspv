@@ -47,6 +47,6 @@ public:
 };
 
 } // libsnark
-#include "gadgetlib1/gadgets/header_verifier/merkle_update/merkle_update_gadget.tcc"
+#include "merkle_update_gadget.tcc"
 
 #endif // MARKLE_UPDATE_GADGETS_HPP_

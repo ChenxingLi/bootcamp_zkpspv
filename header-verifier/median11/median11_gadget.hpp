@@ -34,6 +34,6 @@ public:
 };
 
 } // libsnark
-#include "gadgetlib1/gadgets/header_verifier/median11/median11_gadget.tcc"
+#include "median11_gadget.tcc"
 
 #endif // MEDIAN11_GADGETS_HPP_

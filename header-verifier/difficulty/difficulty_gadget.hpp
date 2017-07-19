@@ -36,6 +36,6 @@ public:
 };
 
 } // libsnark
-#include "gadgetlib1/gadgets/header_verifier/difficulty/difficulty_gadget.tcc"
+#include "difficulty_gadget.tcc"
 
 #endif // DIFFICULTY_COMPARISON_GADGETS_HPP_
