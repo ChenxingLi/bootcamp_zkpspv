@@ -8,7 +8,7 @@
 
 # To override these, use "make OPTFLAGS=..." etc.
 CURVE = BN128
-OPTFLAGS = -O2 -march=native -mtune=native -g
+OPTFLAGS = -O0 -march=native -mtune=native -g
 FEATUREFLAGS = -DUSE_ASM -DMONTGOMERY_OUTPUT -DDEBUG
 CXX = g++
 

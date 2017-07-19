@@ -38,7 +38,7 @@ bool run_r1cs_zkspv_demo(vector<string> &sheader) {
         vec_ld[i].reset(new zkspv_pcd_local_data<FieldT>(header));
         vec_msg[i].reset(new zkspv_pcd_message<FieldT>(1, header.getHash(), uint256(), timeStamp));
     }
-    enter_block("Prepare messages");
+    leave_block("Prepare messages");
 
 
     enter_block("Generate compliance predicate");
