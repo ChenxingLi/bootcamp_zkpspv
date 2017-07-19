@@ -1,3 +1,3 @@
-[submodule "gadgetlib1/gadgets/header-verifier"]
-	path = gadgetlib1/gadgets/header-verifier
+[submodule "gadgetlib1/gadgets/header_verifier"]
+	path = gadgetlib1/gadgets/header_verifier
 	url = https://github.com/FTRobbin/header-verifier.git
