@@ -93,6 +93,6 @@ void testdemo(){
 }
 
 int main(int argc, char *argv[]) {
-    packcheck();
+    testdemo();
     return 0;
 }
