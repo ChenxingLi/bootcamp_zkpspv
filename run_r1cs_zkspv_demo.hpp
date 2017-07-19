@@ -30,7 +30,7 @@ bool run_r1cs_zkspv_demo(vector<string> &sheader) {
     vector<shared_ptr<r1cs_pcd_message<FieldT>>> vec_msg(node_size + 1);
     vector<r1cs_sp_ppzkpcd_proof<FieldT >> proofs(node_size + 1);
 
-    vec_msg[0].reset(new zkspv_pcd_message<FieldT>(0, BlockHeader(sheader[i]).getPrevHash(), uint256(), timeStamp));
+    vec_msg[0].reset(new zkspv_pcd_message<FieldT>(0, BlockHeader(sheader[0]).getPrevHash(), uint256(), timeStamp));
 
     for (size_t i = 1; i <= node_size; i++) {
         BlockHeader header = BlockHeader(sheader[i]);
