@@ -12,6 +12,7 @@
 using std::vector;
 using std::string;
 using std::shared_ptr;
+using namespace libsnark;
 
 template<typename PCD_ppT>
 bool run_r1cs_zkspv_demo(vector<string> &sheader) {
