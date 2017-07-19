@@ -29,7 +29,7 @@ private:
 
 public:
 	
-	pb_variable_arsray<FieldT> msg_input, local_input, msg_output;
+	pb_variable_array<FieldT> msg_input, local_input, msg_output;
 
 	header_verifier_gadget<FieldT>(protoboard<FieldT> &pb,
 					const pb_variable_array<FieldT> &msg_input,
