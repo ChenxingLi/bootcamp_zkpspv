@@ -73,7 +73,7 @@ bool run_r1cs_zkspv_demo(vector<string> &sheader) {
         proof = r1cs_sp_ppzkpcd_prover<PCD_ppT>(keypair.pk,
                                                 tally_primary_input,
                                                 tally_auxiliary_input,
-                                                vector<r1cs_sp_ppzkpcd_proof<FieldT >>(1, proofs[i - 1]));
+                                                vector<r1cs_sp_ppzkpcd_proof<PCD_ppT >>(1, proofs[i - 1]));
 
         proofs[i] = proof;
 
