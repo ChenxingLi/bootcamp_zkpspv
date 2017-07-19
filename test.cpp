@@ -80,7 +80,6 @@ void testdemo(){
 
     start_profiling();
     PCD_ppT::init_public_params();
-    typedef Fr<typename PCD_ppT::curve_A_pp> FieldT;
 
     vector<string> sheaders;
     sheaders.push_back("020000208d0c715f0a32cca0f14a739114209fd90686dc481a2ece000000000000000000895fe03d7fa2b4cc8f8df0860396eb1ae6a4f8659cd5dacc1cfc4bd5d3b3cdf48c0f6d59dc5d01182189e871");

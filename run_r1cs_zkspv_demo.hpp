@@ -28,7 +28,7 @@ bool run_r1cs_zkspv_demo(vector<string> &sheader) {
 
     vector<shared_ptr<r1cs_pcd_local_data<FieldT>>> vec_ld(node_size + 1);
     vector<shared_ptr<r1cs_pcd_message<FieldT>>> vec_msg(node_size + 1);
-    vector<r1cs_sp_ppzkpcd_proof<FieldT >> proofs(node_size + 1);
+    vector<r1cs_sp_ppzkpcd_proof<PCD_ppT >> proofs(node_size + 1);
 
     vec_msg[0].reset(new zkspv_pcd_message<FieldT>(0, BlockHeader(sheader[0]).getPrevHash(), uint256(), timeStamp));
 
