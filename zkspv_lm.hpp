@@ -176,15 +176,16 @@ namespace libsnark {
             repacked.allocate(pb, MSG_LEN / 32, " repacked message");
             unpacker.reset(new multipacking_gadget<FieldT>(pb, unpacked, fully_packed, capacity,
                                                            FMT(this->annotation_prefix, " message fully packer")));
-            byteReverse(unpacked, 32);
-            byteReverse(unpacked, 8);
+            pb_variable_array<FieldT> unpacked_(unpacked);
+            byteReverse(unpacked_, 32);
+            byteReverse(unpacked_, 8);
 
-            repacker.reset(new multipacking_gadget<FieldT>(pb, unpacked, repacked, 32,
+            repacker.reset(new multipacking_gadget<FieldT>(pb, unpacked_, repacked, 32,
                                                            FMT(this->annotation_prefix, " message re-packer")));
         }
 
         void generate_r1cs_constraints() {
-            unpacker->generate_r1cs_constraints(true);
+            //unpacker->generate_r1cs_constraints(true);
             repacker->generate_r1cs_constraints(false);
         }
 
