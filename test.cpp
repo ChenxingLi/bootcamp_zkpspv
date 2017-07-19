@@ -86,6 +86,8 @@ void testdemo(){
     sheaders.push_back("100000202313f27b0b91489bcddca448b4c621a04366a45e3154bd0000000000000000008799e8b70cd66479f51cdc2e298fb01fc6408cd9cd6a6a90077b059da7f153821a116d59dc5d011830976782");
     sheaders.push_back("10000020eda1fb44849d9a371bf345c4c0d98ef5f0064efe7610550000000000000000009fad331c30ac1a0639adf9ff78b953cc2f6e9956ef1d55570e6db879bac7e2fb7a136d59dc5d011897855309");
 
+    assert(BlockHeader(sheaders[1]).getPrevHash()==BlockHeader(sheaders[0]).getHash());
+
     const bool bit = run_r1cs_zkspv_demo<PCD_ppT>(sheaders);
     assert(bit);
 }

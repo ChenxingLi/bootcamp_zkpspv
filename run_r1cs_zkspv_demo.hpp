@@ -47,7 +47,7 @@ bool run_r1cs_zkspv_demo(vector<string> &sheader) {
     zkspv_cp_handler<FieldT> zkspv(type, capacity);
     zkspv.generate_r1cs_constraints();
 //    r1cs_pcd_compliance_predicate<FieldT> zkspv_cp = zkspv.get_compliance_predicate();
-//    leave_block("Generate compliance predicate");
+    leave_block("Generate compliance predicate");
 //
 //    print_header("R1CS ppzkPCD Generator");
 //    r1cs_sp_ppzkpcd_keypair<PCD_ppT> keypair = r1cs_sp_ppzkpcd_generator<PCD_ppT>(zkspv_cp);
