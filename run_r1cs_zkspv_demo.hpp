@@ -14,7 +14,7 @@ using std::string;
 using std::shared_ptr;
 
 template<typename PCD_ppT>
-int run_r1cs_zkspv_demo(vector<string> &sheader) {
+bool run_r1cs_zkspv_demo(vector<string> &sheader) {
     enter_block("Call to run_r1cs_sp_ppzkpcd_tally_example");
 
     typedef Fr<typename PCD_ppT::curve_A_pp> FieldT;
@@ -28,6 +28,8 @@ int run_r1cs_zkspv_demo(vector<string> &sheader) {
     vector<shared_ptr<r1cs_pcd_local_data<FieldT>>> vec_ld(node_size + 1);
     vector<shared_ptr<r1cs_pcd_message<FieldT>>> vec_msg(node_size + 1);
     vector<r1cs_sp_ppzkpcd_proof<FieldT >> proofs(node_size + 1);
+
+    vec_msg[0].reset(new zkspv_pcd_message<FieldT>(0, BlockHeader(sheader[i]).getPrevHash(), uint256(), timeStamp));
 
     for (size_t i = 1; i <= node_size; i++) {
         BlockHeader header = BlockHeader(sheader[i]);
@@ -57,6 +59,7 @@ int run_r1cs_zkspv_demo(vector<string> &sheader) {
 
 
         zkspv.generate_r1cs_witness(vec_msg[i - 1], vec_msg[i], vec_ld[i]);
+        zkspv.is_satisfied();
 
         const r1cs_pcd_compliance_predicate_primary_input<FieldT> tally_primary_input(vec_msg[i]);
         const r1cs_pcd_compliance_predicate_auxiliary_input<FieldT> tally_auxiliary_input(
@@ -65,8 +68,11 @@ int run_r1cs_zkspv_demo(vector<string> &sheader) {
                 zkspv.get_witness());
 
         print_header("R1CS ppzkPCD Prover");
-        r1cs_sp_ppzkpcd_proof<PCD_ppT> proof = r1cs_sp_ppzkpcd_prover<PCD_ppT>(keypair.pk, tally_primary_input,
-                                                                               tally_auxiliary_input, vector<r1cs_sp_ppzkpcd_proof<FieldT >>(1,proofs[i-1]));
+        r1cs_sp_ppzkpcd_proof<PCD_ppT> proof;
+        proof = r1cs_sp_ppzkpcd_prover<PCD_ppT>(keypair.pk,
+                                                tally_primary_input,
+                                                tally_auxiliary_input,
+                                                vector<r1cs_sp_ppzkpcd_proof<FieldT >>(1, proofs[i - 1]));
 
         proofs[i] = proof;
 
@@ -87,6 +93,7 @@ int run_r1cs_zkspv_demo(vector<string> &sheader) {
 
     leave_block("Call to run_r1cs_sp_ppzkpcd_tally_example");
 
+    return all_accept;
 }
 
 #endif //BOOTCAMP_ZKPSPV_RUN_R1CS_ZKSPV_DEMO_HPP

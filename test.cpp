@@ -11,6 +11,7 @@
 #include <common/default_types/r1cs_ppzkpcd_pp.hpp>
 #include <zk_proof_systems/pcd/r1cs_pcd/r1cs_sp_ppzkpcd/r1cs_sp_ppzkpcd.hpp>
 #include "zkspv_cp.hpp"
+#include "run_r1cs_zkspv_demo.hpp"
 
 using std::string;
 
@@ -74,7 +75,22 @@ void packcheck() {
     std::cout << "Test Passed!" << std::endl;
 }
 
+void testdemo(){
+    typedef default_r1cs_ppzkpcd_pp PCD_ppT;
+
+    start_profiling();
+    PCD_ppT::init_public_params();
+    typedef Fr<typename PCD_ppT::curve_A_pp> FieldT;
+
+    vector<string> sheaders;
+    sheaders.push_back("020000208d0c715f0a32cca0f14a739114209fd90686dc481a2ece000000000000000000895fe03d7fa2b4cc8f8df0860396eb1ae6a4f8659cd5dacc1cfc4bd5d3b3cdf48c0f6d59dc5d01182189e871");
+    sheaders.push_back("100000202313f27b0b91489bcddca448b4c621a04366a45e3154bd0000000000000000008799e8b70cd66479f51cdc2e298fb01fc6408cd9cd6a6a90077b059da7f153821a116d59dc5d011830976782");
+    sheaders.push_back("10000020eda1fb44849d9a371bf345c4c0d98ef5f0064efe7610550000000000000000009fad331c30ac1a0639adf9ff78b953cc2f6e9956ef1d55570e6db879bac7e2fb7a136d59dc5d011897855309");
+
+    const bool bit = run_r1cs_zkspv_demo<FieldT>(sheaders);
+    assert(bit);
+}
 int main(int argc, char *argv[]) {
-    packcheck();
+    testdemo();
     return 0;
 }

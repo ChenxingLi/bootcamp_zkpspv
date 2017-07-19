@@ -85,7 +85,6 @@ namespace libsnark {
         zkspv_pcd_local_data(BlockHeader header) : header(header) {}
 
         r1cs_variable_assignment<FieldT> as_r1cs_variable_assignment() const {
-            size_t count = 0;
             r1cs_variable_assignment<FieldT> result;
             FieldT base = FieldT::one();
             FieldT sum = FieldT::zero();
