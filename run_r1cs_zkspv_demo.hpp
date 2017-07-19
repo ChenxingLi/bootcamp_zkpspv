@@ -36,7 +36,7 @@ bool run_r1cs_zkspv_demo(vector<string> &sheader) {
         BlockHeader header = BlockHeader(sheader[i-1]);
         timeStamp.update(header.getTimeStamp());
         vec_ld[i].reset(new zkspv_pcd_local_data<FieldT>(header));
-        vec_msg[i].reset(new zkspv_pcd_message<FieldT>(0, header.getHash(), uint256(), timeStamp));
+        vec_msg[i].reset(new zkspv_pcd_message<FieldT>(1, header.getHash(), uint256(), timeStamp));
     }
     leave_block("Prepare messages");
 
@@ -46,14 +46,14 @@ bool run_r1cs_zkspv_demo(vector<string> &sheader) {
     const size_t capacity = FieldT::capacity();
     zkspv_cp_handler<FieldT> zkspv(type, capacity);
     zkspv.generate_r1cs_constraints();
-//    r1cs_pcd_compliance_predicate<FieldT> zkspv_cp = zkspv.get_compliance_predicate();
+    r1cs_pcd_compliance_predicate<FieldT> zkspv_cp = zkspv.get_compliance_predicate();
     leave_block("Generate compliance predicate");
 
     print_header("R1CS ppzkPCD Generator");
-//    r1cs_sp_ppzkpcd_keypair<PCD_ppT> keypair = r1cs_sp_ppzkpcd_generator<PCD_ppT>(zkspv_cp);
+    r1cs_sp_ppzkpcd_keypair<PCD_ppT> keypair = r1cs_sp_ppzkpcd_generator<PCD_ppT>(zkspv_cp);
 
     print_header("Process verification key");
-//    r1cs_sp_ppzkpcd_processed_verification_key<PCD_ppT> pvk = r1cs_sp_ppzkpcd_process_vk<PCD_ppT>(keypair.vk);
+    r1cs_sp_ppzkpcd_processed_verification_key<PCD_ppT> pvk = r1cs_sp_ppzkpcd_process_vk<PCD_ppT>(keypair.vk);
 
 
     for (size_t i = 1; i <= node_size; i++) {
@@ -62,33 +62,33 @@ bool run_r1cs_zkspv_demo(vector<string> &sheader) {
         zkspv.generate_r1cs_witness(vec_msg[i - 1], vec_msg[i], vec_ld[i]);
         zkspv.is_satisfied();
 
-//        const r1cs_pcd_compliance_predicate_primary_input<FieldT> tally_primary_input(vec_msg[i]);
-//        const r1cs_pcd_compliance_predicate_auxiliary_input<FieldT> tally_auxiliary_input(
-//                vector<std::shared_ptr<r1cs_pcd_message<FieldT >>>(1, vec_msg[i]),
-//                vec_ld[i],
-//                zkspv.get_witness());
+        const r1cs_pcd_compliance_predicate_primary_input<FieldT> tally_primary_input(vec_msg[i]);
+        const r1cs_pcd_compliance_predicate_auxiliary_input<FieldT> tally_auxiliary_input(
+                vector<std::shared_ptr<r1cs_pcd_message<FieldT >>>(1, vec_msg[i]),
+                vec_ld[i],
+                zkspv.get_witness());
 
         print_header("R1CS ppzkPCD Prover");
         r1cs_sp_ppzkpcd_proof<PCD_ppT> proof;
-//        proof = r1cs_sp_ppzkpcd_prover<PCD_ppT>(keypair.pk,
-//                                                tally_primary_input,
-//                                                tally_auxiliary_input,
-//                                                vector<r1cs_sp_ppzkpcd_proof<PCD_ppT >>(1, proofs[i - 1]));
+        proof = r1cs_sp_ppzkpcd_prover<PCD_ppT>(keypair.pk,
+                                                tally_primary_input,
+                                                tally_auxiliary_input,
+                                                vector<r1cs_sp_ppzkpcd_proof<PCD_ppT >>(1, proofs[i - 1]));
 
         proofs[i] = proof;
 
 
-//        print_header("R1CS ppzkPCD Verifier");
-//        const r1cs_sp_ppzkpcd_primary_input<PCD_ppT> pcd_verifier_input(vec_msg[i]);
-//        const bool ans = r1cs_sp_ppzkpcd_verifier<PCD_ppT>(keypair.vk, pcd_verifier_input, proof);
-//
-//        print_header("R1CS ppzkPCD Online Verifier");
-//        const bool ans2 = r1cs_sp_ppzkpcd_online_verifier<PCD_ppT>(pvk, pcd_verifier_input, proof);
-//        assert(ans == ans2);
+        print_header("R1CS ppzkPCD Verifier");
+        const r1cs_sp_ppzkpcd_primary_input<PCD_ppT> pcd_verifier_input(vec_msg[i]);
+        const bool ans = r1cs_sp_ppzkpcd_verifier<PCD_ppT>(keypair.vk, pcd_verifier_input, proof);
 
-//        all_accept = all_accept && ans;
+        print_header("R1CS ppzkPCD Online Verifier");
+        const bool ans2 = r1cs_sp_ppzkpcd_online_verifier<PCD_ppT>(pvk, pcd_verifier_input, proof);
+        assert(ans == ans2);
 
-//        printf("Current node = %zu. Current proof verifies = %s\n", i, ans ? "YES" : "NO");
+        all_accept = all_accept && ans;
+
+        printf("Current node = %zu. Current proof verifies = %s\n", i, ans ? "YES" : "NO");
         printf("\n\n\n ================================================================================\n\n\n");
     }
 
