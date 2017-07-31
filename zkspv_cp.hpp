@@ -18,7 +18,7 @@ namespace libsnark {
         std::shared_ptr<zkspv_message_packer<FieldT> > msgpack_in;
         std::shared_ptr<zkspv_message_packer<FieldT> > msgpack_out;
 
-        std::shared_ptr<header_verifier_gadget<FieldT> > header_verifier;
+        boost::array<std::shared_ptr<header_verifier_gadget<FieldT> >,BATCH> header_verifier;
 
 
         zkspv_cp_handler(const size_t type,
@@ -57,15 +57,21 @@ namespace libsnark {
 //            pb_variable_array<FieldT> head_ver_in(msgpack_in->repacked.begin() + 8, msgpack_in->repacked.begin() + 16);
 //            pb_variable_array<FieldT> head_ver_out(msgpack_out->repacked.begin() + 8,
 //                                                   msgpack_out->repacked.begin() + 16);
+            pb_variable_array<FieldT> local(std::dynamic_pointer_cast<zkspv_pcd_local_data_variable<FieldT> >(
+        this->local_data)->packed_local_data);
 
-            this->header_verifier.reset(new header_verifier_gadget<FieldT>(
-                    this->pb,
-                    msgpack_in->repacked,
-                    std::dynamic_pointer_cast<zkspv_pcd_local_data_variable<FieldT> >(
-                            this->local_data)->packed_local_data,
-                    msgpack_out->repacked,
-                    " header verifier"
-            ));
+            for(size_t k=0;k<BATCH; k++){
+                this->header_verifier.reset(new header_verifier_gadget<FieldT>(
+                this->pb,
+msgpack_in->repacked,
+,
+msgpack_out->repacked,
+" header verifier"
+));
+
+}
+
+
 
 //            sha256_2.reset(new sha256_2_function_check_gadget<FieldT>(this->pb,
 //                                                                      std::dynamic_pointer_cast<zkspv_pcd_local_data_variable<FieldT> >(

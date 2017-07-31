@@ -1,5 +1,6 @@
 cmake-build-debug/*
 .idea/*
+notcode/*
 
 profile_r1cs_sp_ppzkpcd
 CMakeLists.txt
