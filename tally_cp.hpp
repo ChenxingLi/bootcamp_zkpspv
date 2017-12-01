@@ -22,9 +22,17 @@
 #ifndef TALLY_CP_HPP_
 #define TALLY_CP_HPP_
 
-#include "gadgetlib1/gadgets/basic_gadgets.hpp"
-#include "zk_proof_systems/pcd/r1cs_pcd/compliance_predicate/compliance_predicate.hpp"
-#include "zk_proof_systems/pcd/r1cs_pcd/compliance_predicate/cp_handler.hpp"
+#include <libsnark/zk_proof_systems/pcd/r1cs_pcd/compliance_predicate/compliance_predicate.hpp>
+#include <libsnark/zk_proof_systems/pcd/r1cs_pcd/compliance_predicate/cp_handler.hpp>
+#include <libsnark/gadgetlib1/gadgets/basic_gadgets.hpp>
+
+using libff::print_header;
+using libff::Fr;
+using libff::enter_block;
+using libff::leave_block;
+using libff::reserialize;
+using libff::convert_field_element_to_bit_vector;
+using libff::bit_vector;
 
 namespace libsnark {
 

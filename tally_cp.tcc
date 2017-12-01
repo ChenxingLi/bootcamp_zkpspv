@@ -17,7 +17,7 @@
 
 #include <algorithm>
 #include <functional>
-#include <algebra/fields/field_utils.hpp>
+#include <libff/algebra/fields/field_utils.hpp>
 #include "tally_cp.hpp"
 
 
