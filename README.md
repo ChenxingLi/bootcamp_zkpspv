@@ -6,6 +6,8 @@ Currently, the SPV client needs to store the block header of all the blocks. In 
 
 The prover needs to generate a proof for each block header sequentially. (But prover only needs to store the last proof.) According to our experiment, a 32-thread server can generate one proof in 3 second. So it will take about two weeks to generate a proof for the newest block and spend 3 second updating each new block. Fortunately, everyone can verify the proof quickly and use it directly. So we only need to run the heavy start-up once.
 
+The code is uncompleted. Just use it for reference and learning. 
+
 Collaborators for Idea and Code:
 
 - Ahmed Kosba [@akosba](https://github.com/akosba)
