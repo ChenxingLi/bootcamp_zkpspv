@@ -12,7 +12,7 @@
 #ifndef RUN_R1CS_SP_PPZKPCD_TCC_
 #define RUN_R1CS_SP_PPZKPCD_TCC_
 
-#include <zk_proof_systems/pcd/r1cs_pcd/r1cs_sp_ppzkpcd/r1cs_sp_ppzkpcd.hpp>
+#include <libsnark/zk_proof_systems/pcd/r1cs_pcd/r1cs_sp_ppzkpcd/r1cs_sp_ppzkpcd.hpp>
 #include <fstream>
 #include <iostream>
 

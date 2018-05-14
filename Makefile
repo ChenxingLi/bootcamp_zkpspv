@@ -9,20 +9,20 @@
 # To override these, use "make OPTFLAGS=..." etc.
 CURVE = BN128
 OPTFLAGS = -O2 -march=native -mtune=native -g
-FEATUREFLAGS = -DUSE_ASM -DMONTGOMERY_OUTPUT
+FEATUREFLAGS = -DUSE_ASM -DMONTGOMERY_OUTPUT -DNO_PROCPS
 CXX = g++
 
 INSTALL_PATH = /usr/local
 # Initialize this using "CXXFLAGS=... make". The makefile appends to that.
 CXXFLAGS += -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-comment -Wfatal-errors $(OPTFLAGS) $(FEATUREFLAGS) -DCURVE_$(CURVE)
 
-CXXFLAGS += -I$(INSTALL_PATH)/include -I$(INSTALL_PATH)/include/libsnark -I/root/bootcamp_zkpspv
+CXXFLAGS += -I$(INSTALL_PATH)/include
 
 CXXFLAGS += -fopenmp -DMULTICORE
 LDFLAGS += -L$(INSTALL_PATH)/lib
 LDLIBS += -lgmpxx -lgmp -lboost_program_options
 # OpenSSL and its dependencies (needed explicitly for static builds):
-LDLIBS += -lcrypto -ldl -lz -lsnark
+LDLIBS += -lcrypto -ldl -lz -lsnark -lff -lprocps
 
 EXECUTABLES = \
 	main \
